@@ -1,1 +1,31 @@
+<<<<<<< HEAD
 
+=======
+```{r}
+#| label: loading-packages
+#| message: false 
+
+library(tidyverse)
+
+```
+
+```{r}
+#| label: loading-datasets
+#| message: false
+#| eval: false
+
+#loading datasets childcare_costs and counties from tidytuesday
+tuesdata <- tidytuesdayR::tt_load(2023, week = 19)
+
+childcare_costs <- tuesdata$childcare_costs
+counties <- tuesdata$counties
+
+#loading dataset expenditures from tidytuesday
+tuesdata <- tidytuesdayR::tt_load(2020, week = 38)
+
+expenditures <- tuesdata$kids
+
+#loading dataset scores
+scores <- read_csv("data/scores.csv")
+```
+>>>>>>> b7dc47cf913c7887c0e2f2a7b7e7e06dfdf751b1
