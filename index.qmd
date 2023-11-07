@@ -20,7 +20,7 @@ counties <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/t
 
 #loading dataset expenditures from tidytuesday
 
-kids <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')
+expenditures <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')
 
 #loading dataset scores
 scores <- read_csv("data/scores.csv")
