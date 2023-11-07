@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 ```{r}
 #| label: loading-packages
 #| message: false 
@@ -28,4 +25,3 @@ kids <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidyt
 #loading dataset scores
 scores <- read_csv("data/scores.csv")
 ```
->>>>>>> b7dc47cf913c7887c0e2f2a7b7e7e06dfdf751b1
