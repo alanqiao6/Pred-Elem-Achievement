@@ -1,8 +1,8 @@
-Project #2: Proposal
-
-Team Janíce
-
-11/6/2023
+---
+title: Proposal
+author: Team Janíce
+date: 11/6/2023
+---
 
 ## Overview:
 
@@ -54,6 +54,10 @@ expenditures <- tuesdata$kids
 #loading dataset scores
 scores <- read_csv("data/scores.csv")
 ```
+
+The Expenditures dataset is based on the tidytuesday dataset US Spending on Kids and provides an extensive accounting of public spending on children from 1997 through 2016. We chose this dataset because we wanted to track and compare government spending by state and throughout the years, and see how this affects statewide education improvement. This dataset utilizes various federal resources such as the US Census Bureau's Annual Survey of State and Local Government Finances to illustrate individual state spending on education, health, income security, and other areas. The Expenditures dataset has 23460 observations and 6 variables. The observations are separated by state (plus the District of Columbia) and details 23 different types of public spending including elementary & secondary education, pell grants, social security payments on children, and unemployment compensation benefits. The dataset also captures the raw amount spent and the total and per child amounts in 2016 dollars for each year spent.
+
+The Scores dataset is based on the Nation's Report Card data that uses the 2022 National Assessment of Educational Progress (NAEP) assessments with scores from 0-500 in mathematics, reading, writing, and sciences at grade 4. This dataset compares state and jurisdiction performance to the national public average scale score of 216. We chose this dataset because we need a quantitative way to analyze educational progress within each state/jurisdiction. The Scores dataset has 54 observations and 6 variables. The observations are separated by state (plus the Department of Defense Education Activity, National Public, District of Columbia, and Puerto Rico). The dataset displays the average scores for each region, the difference from the National Public, how significant the score is from the National Public, the percentage at or above Basic, and the percentage at or above Proficient.
 
 ## Weekly Timeline:
 
