@@ -12,15 +12,15 @@ library(tidyverse)
 #| eval: false
 
 #loading datasets childcare_costs and counties from tidytuesday
-tuesdata <- tidytuesdayR::tt_load(2023, week = 19)
 
-childcare_costs <- tuesdata$childcare_costs
-counties <- tuesdata$counties
+childcare_costs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')
+
+counties <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')
+
 
 #loading dataset expenditures from tidytuesday
-tuesdata <- tidytuesdayR::tt_load(2020, week = 38)
 
-expenditures <- tuesdata$kids
+kids <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')
 
 #loading dataset scores
 scores <- read_csv("data/scores.csv")
