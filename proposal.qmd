@@ -1,0 +1,154 @@
+---
+title: Proposal
+author: Team Janíce
+date: 11/6/2023
+---
+
+## Overview:
+
+In this project, we seek to identify both community-level sociodemographic factors and state-level funding factors that predict statewide fourth-grade achievement rates in reading. Our ultimate goal is to determine pathways for policy-based intervention in the future to maximize educational success for youth of all backgrounds. We came upon this topic as a result of the content we are learning in our FOCUS cluster, Knowledge in the Service of Society. We are seeking to go beyond identifying community-level inequities and instead hope to investigate root causes and their logical solutions. 
+
+To properly explore these factors, our project will include four major steps:
+
+First, we will teach ourselves how to use the "maps" package to create a choropleth map of the United States where a gradient scale demonstrates the state achievement rates in fourth grade reading. This visualization will allow us, and others, to easily identify the states with highest achievement rates. From here, we can conduct further analysis on the funding distributions and community-level variables in these "best-practice states." 
+
+Second, we will make a second choropleth map using the "expenditures" dataset. This visualization will serve as a comparison to the first one, providing a visual representation of total school expenditures in elementary schools by state. By creating two maps of the same area (the United States) and using gradient scales to indicate both funding levels and achievement scores, viewers will be able to easily draw their own conclusions about possible associations between the two factors. In later parts of our project, we will use models to come to objective standpoints. 
+
+Third, we will use forward selection to identify community-level factors (e.g. poverty rate, median household income, average cost of childcare) that accurately predict statewide fourth grade achievement rates in reading. We will select potential predictors based on background knowledge from our other FOCUS classes and then move to statistical methods (adjusted-R2) to assess their importance in this context. Ultimately, we will have a linear regression model that merges a collection of community-level socioeconomic variables to predict fourth grade reading levels. After identifying which sociodemographic changes impact education achievement, we will be able to later theorize over possible steps to progress towards overall improvement via these specific pathways.
+
+The fourth goal we want to accomplish is largely based upon the initial visualizations we create. Using the choropleth map, regression model, and R2 analysis, we will ideally identify one or two noteworthy variables that appear to be the best predictors of achievement in fourth graders. We will complete 1-3 of these three options based on initial findings. 
+
+-   If we see that total elementary school expenditures seems to predict achievement rate based on the choropleth map from goal #2, we will analytically confirm this relationship through linear regression. We will then use the "mutate" function to see whether the relationship is maintained based on the percentage of total state funding that is spent in elementary schools or whether an association exclusively exists between the total amount of elementary school funding and achievement rates. 
+
+-   Based on knowledge from our other KISS classes, we will explore the interactive effect between two significant community-level predictors of achievement rates to get a more granular understanding of how community structures combine with one another to predict academic success in youth. 
+
+-   We will determine a threshold for "high achievement rates" and then subset our data to include states with achievement rates past this threshold. For these states, we will create bar charts that allow us to examine the distribution of funding in every sector within total state expenditures. 
+
+    -   We will use these bar charts to determine which sectors (e.g. transportation, Medicaid, etc.) seem to be getting the greatest allocation of state funding in top achievement states and then use multiple linear regression to confirm our hypothesized associations between funding distribution and achievement outcomes.
+
+## Loading and Exploring Data
+
+```{r}
+#| label: loading-packages
+#| message: false 
+
+library(tidyverse)
+
+```
+
+```{r}
+#| label: loading-datasets
+#| message: false
+
+#loading datasets childcare_costs and counties from tidytuesday
+tuesdata <- tidytuesdayR::tt_load(2023, week = 19)
+
+childcare_costs <- tuesdata$childcare_costs
+counties <- tuesdata$counties
+
+#loading dataset expenditures from tidytuesday
+tuesdata <- tidytuesdayR::tt_load(2020, week = 38)
+
+expenditures <- tuesdata$kids
+
+#loading dataset scores
+scores <- read_csv("data/scores.csv")
+```
+
+The Expenditures dataset is based on the tidytuesday dataset US Spending on Kids and provides an extensive accounting of public spending on children from 1997 through 2016. We chose this dataset because we wanted to track and compare government spending by state and throughout the years, and see how this affects statewide education improvement. This dataset utilizes various federal resources such as the US Census Bureau's Annual Survey of State and Local Government Finances to illustrate individual state spending on education, health, income security, and other areas. The Expenditures dataset has 23460 observations and 6 variables. The observations are separated by state (plus the District of Columbia) and details 23 different types of public spending including elementary & secondary education, pell grants, social security payments on children, and unemployment compensation benefits. The dataset also captures the raw amount spent and the total and per child amounts in 2016 dollars for each year spent.
+
+The Scores dataset is based on the Nation's Report Card data that uses the 2022 National Assessment of Educational Progress (NAEP) assessments with scores from 0-500 in mathematics, reading, writing, and sciences at grade 4. This dataset compares state and jurisdiction performance to the national public average scale score of 216. We chose this dataset because we need a quantitative way to analyze educational progress within each state/jurisdiction. The Scores dataset has 54 observations and 6 variables. The observations are separated by state (plus the Department of Defense Education Activity, National Public, District of Columbia, and Puerto Rico). The dataset displays the average scores for each region, the difference from the National Public, how significant the score is from the National Public, the percentage at or above Basic, and the percentage at or above Proficient.
+
+## Weekly Timeline:
+
+Week #3 (part 1---before 11/7) 
+
+-   Finalize write-up of high-level goal #4 - Nush 
+
+-   Create this "plan of attack" - Nush 
+
+-   Finish exploring the datasets - Alan and Noah 
+
+    -   Determine the \# of observations and variables (using inline code) in each dataset
+
+    -   Identify and define the relevant variables in each dataset (using inline code) 
+
+    -   Load all datasets into the project repository (3) 
+
+-   Finalize the organization of our project repository Julia 
+
+    -   Create appropriate folders in the project repository with appropriate README.md files 
+
+    -   Add/fix inline code in the proposal 
+
+    -   Update the data dictionary 
+
+-   Asynchronous discussion to assign each of the outlined responsibilities to various team members 
+
+-   Upload a draft of the proposal into official project repository - Nush 
+
+Week #3 (part 2---after 11/7) 
+
+-   Team meeting to make adjustments to our proposal following peer review 
+
+Week #4 
+
+-   Merge the "expenditures" dataset with "scores" dataset - Noah 
+
+-   Merge the "childcarecosts" dataset with "scores" dataset - Noah
+
+-   Adapt all datasets to only include variables of interest - Noah 
+
+-   Read through the description of  the "maps" package in R - Julia and Alan 
+
+    -   Work collaboratively to create two choropleth maps through the functions in the "maps" package (visualizations #1 and #2) 
+
+-   Use forward selection to build a multiple linear regression model as outlined in goal #3 and document the process (including adjusted R2 values) - Nush 
+
+Week #5 
+
+-   Team meeting: 
+
+    -   Review feedback on proposal and make adjustments to our goals accordingly 
+
+    -   Select which of the options from goal #4 to pursue 
+
+    -   Create a mini-timeline for the rest of the week to asynchronously achieve our finalized goal #4  
+
+-   Finish goal #4 as planned at team meeting 
+
+Week #6: 
+
+-   Interpret findings and create a draft of write-up
+
+    -   Introduction - rationale for project and how it holistically connects to KISS - Noah
+
+    -   Summary of goals and process - Noah
+
+    -   Findings from visualization #1 (use inline code) - Alan 
+
+    -   Findings from visualization #2 (use inline code) - Alan 
+
+    -   Findings for visualization #3 (use inline code) - Alan
+
+    -   Narrative for how we chose to approach goal #4 - Nush 
+
+    -   Findings from visualization(s) #4 (use inline code) - Nush 
+
+    -   Applications and recommendations for further research - Julia 
+
+    -   Limitations - Julia/Noah (depending on how long the other steps take) 
+
+Week #7: 
+
+-   Team meeting #1: 
+
+    -   Finalize write-up together 
+
+    -   Use write-up as an outline to design presentation 
+
+    -   Make adjustments to all parts of the project according to peer review
+
+-   Team meeting #2: 
+
+    -   Practice and refine presentation
