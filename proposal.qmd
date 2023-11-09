@@ -40,12 +40,11 @@ library(tidyverse)
 #| label: loading-datasets
 #| message: false
 
-#loading datasets childcare_costs and counties from tidytuesday
+#loading dataset childcare_costs
+childcare_costs <- read_csv("data/childcare_costs.csv")
 
-childcare_costs <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')
-
-counties <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')
-
+#loading dataset counties
+counties <- read_csv("data/counties.csv")
 
 #loading dataset expenditures
 expenditures <- read_csv("data/state_expenditures.csv")
@@ -60,6 +59,10 @@ The `expenditures` dataset is sourced from the Kaiser Family Foundation, through
 The `scores` dataset is based on the Nation's Report Card data that uses the 2022 National Assessment of Educational Progress (NAEP) assessments with scores from 0-500 in mathematics, reading, writing, and sciences at grade 4. This dataset compares state and jurisdiction performance to the national public average scale score of 216. We chose this dataset because we need a quantitative way to analyze educational progress within each state/jurisdiction. The `scores` dataset has `r nrow(scores)` observations and `r ncol(scores)` variables. The observations are separated by state (plus the Department of Defense Education Activity, National Public, District of Columbia, and Puerto Rico). The dataset displays the average scores for each region (`MN`), the difference from the National Public (`SigDiff`), how significant the score is from the National Public (`SigSymbol`), the percentage at or above Basic (`AB`), and the percentage at or above Proficient (`AP`).
 
 The `childcare_costs` dataset is from a federal source, the National Database of Childcare Prices. Measured from 2008 to 2018, its data is captured at the county level by for whom, what, where (, etc.) the childcare is provided. It also measures these data in conjunction with other seemingly unrelated variables and circumstances like teenage unemployment or young-parent labor. In the set, there are `r nrow(childcare_costs)` rows and `r ncol(childcare_costs)` columns. This dataset seemed pertinent because of how deeply intertwined it is with both the basis and offshooting considerations of our project. For example, it ties childcare costs with race, location, gender, income, and more; tying these considerations in with achievement rates provides a comprehensive look at predictors for childhood success. It is our hope that this dataset provides breadth to the analyses we proceed with conducting.
+
+## Repository Organization:
+
+Our repository is organized in a simple yet effective manner. All data files have been loaded into the data folder as csv files with a corresponding data dictionary in the README.md in the folder. Quarto files and the project itself have been left in the first plane of the repository so that they have easy access to the data folders and other
 
 ## Weekly Timeline:
 
