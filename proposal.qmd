@@ -62,7 +62,7 @@ The `childcare_costs` dataset is from a federal source, the National Database of
 
 ## Repository Organization:
 
-Our repository is organized in a simple yet effective manner. All data files have been loaded into the data folder as csv files with a corresponding data dictionary in the README.md in the folder. Quarto files and the project itself have been left in the first plane of the repository so that they have easy access to the data folders and other
+Our repository is organized in a simple yet effective manner. All data files have been loaded into the data folder as csv files with a corresponding data dictionary in the README.md in the folder. Quarto files and the project itself have been left in the first level of the repository so that they have easy access to the data files and other objects.
 
 ## Weekly Timeline:
 
