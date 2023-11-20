@@ -32,7 +32,7 @@
     "href": "index.html",
     "title": "janIce",
     "section": "",
-    "text": "library(tidyverse)\n\n\n#loading datasets childcare_costs and counties from tidytuesday\n\nchildcare_costs &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')\n\ncounties &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')\n\n\n#loading dataset expenditures from tidytuesday\n\nkids &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')\n\n#loading dataset scores\nscores &lt;- read_csv(\"data/scores.csv\")"
+    "text": "library(tidyverse)\nlibrary(maps)\n\n\n#loading datasets childcare_costs and counties from tidytuesday\n\nchildcare_costs &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')\n\ncounties &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')\n\n\n#loading dataset expenditures from tidytuesday\n\nexpenditures &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')\n\n#loading dataset scores\nscores &lt;- read_csv(\"data/scores.csv\")\n\n#loading us map \nus_states &lt;- map_data(\"state\")\n\nCode for us_states from Kieran Healy: https://socviz.co/maps.html#map-u.s.-state-level-data"
   },
   {
     "objectID": "proposal.html#repository-organization",

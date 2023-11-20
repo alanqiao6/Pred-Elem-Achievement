@@ -3,6 +3,7 @@
 #| message: false 
 
 library(tidyverse)
+library(maps)
 
 ```
 
@@ -24,4 +25,10 @@ expenditures <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 
 #loading dataset scores
 scores <- read_csv("data/scores.csv")
+
+#loading us map 
+us_states <- map_data("state")
+
 ```
+
+Code for us_states from Kieran Healy: `https://socviz.co/maps.html#map-u.s.-state-level-data`
