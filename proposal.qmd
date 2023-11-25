@@ -47,7 +47,7 @@ childcare_costs <- read_csv("data/childcare_costs.csv")
 counties <- read_csv("data/counties.csv")
 
 #loading dataset expenditures
-expenditures <- read_csv("data/state_expenditures.csv")
+expenditures <- read_csv("data/expenditures.csv")
 
 #loading dataset scores
 scores <- read_csv("data/scores.csv")

@@ -1,3 +1,9 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
 ```{r}
 #| label: loading-packages
 #| message: false 
@@ -10,25 +16,50 @@ library(maps)
 ```{r}
 #| label: loading-datasets
 #| message: false
-#| eval: false
 
-#loading datasets childcare_costs and counties from tidytuesday
+#loading dataset childcare_costs from tidytuesday
+childcare_costs <- read_csv("data/childcare_costs.csv")
 
-childcare_costs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')
-
-counties <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')
-
-
-#loading dataset expenditures from tidytuesday
-
-expenditures <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-15/kids.csv')
+#loading dataset counties from tidytuesday
+counties <- read_csv("data/counties.csv")
 
 #loading dataset scores
 scores <- read_csv("data/scores.csv")
 
-#loading us map 
+#loading dataset expenditures from tidytuesday
+expenditures <- read_csv("data/expenditures.csv")
+                         
+#loading us map
 us_states <- map_data("state")
 
 ```
 
 Code for us_states from Kieran Healy: `https://socviz.co/maps.html#map-u.s.-state-level-data`
+
+```{r}
+#| label: customizing-datasets
+#| message: false
+
+expenditures_PK12ed <- expenditures |> 
+  mutate(region = str_to_lower(state)) |>
+  filter(variable == "PK12ed") 
+
+us_states_joined <- us_states |>
+  select(-subregion) |>
+  inner_join(
+    expenditures_PK12ed, 
+    join_by(region == region), 
+    relationship = "many-to-many"
+    ) 
+
+```
+
+```{r}
+#| label: us-map-plot
+
+ggplot(us_states_joined, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
+  geom_polygon() +
+  guides(fill = "none") + 
+  theme_void() + 
+  scale_fill_gradient(low = "white", high = "navyblue")
+```
