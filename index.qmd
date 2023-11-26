@@ -38,8 +38,6 @@ scores <- read_csv("data/scores.csv")
 
 #loading us map 
 us_states <- map_data("state")
-
-expenditures
 ```
 
 # Choropleth Maps 
@@ -187,5 +185,35 @@ Cross-referencing research with dataset to identify potential factors
 -   Median cost of center-based childcare
 
 ```{r}
-#| label: forward-selection-
+#| label: forward-selection-model 
+
+#Family poverty level 
+childcare_costs <- childcare_costs |>
+  mutate(family_poverty = pr_f)
+
+#Minority racial status 
+childcare_costs <- childcare_costs |> 
+  mutate(
+    minority_racial_status = 
+      one_race_b +
+      one_race_i +
+      one_race_a +
+      one_race_h +
+      one_race_other + 
+      two_races
+  )
+
+#Percentage of single-mother households 
+childcare_costs <- childcare_costs |> 
+  mutate(
+    percentage_single_mother =
+      h_under6_single_m / households
+  )
+  
+#Ratio of two-parent-working to one-parent-working households 
+childcare_costs <- childcare_costs |> 
+  mutate(
+    
+    
+  )
 ```
