@@ -2,7 +2,12 @@
 output: html_document
 editor_options: 
   chunk_output_type: console
+editor: 
+  markdown: 
+    wrap: 72
 ---
+
+# Loading Packages and Data
 
 ```{r}
 #| label: loading-packages
@@ -37,7 +42,10 @@ us_states <- map_data("state")
 expenditures
 ```
 
-Code for us_states from Kieran Healy: `https://socviz.co/maps.html#map-u.s.-state-level-data`
+# Choropleth Maps 
+
+Code for us_states from Kieran Healy:
+`https://socviz.co/maps.html#map-u.s.-state-level-data`
 
 ```{r}
 #| label: us-map
@@ -73,4 +81,111 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   guides(fill = FALSE) + 
   theme_void() + 
   scale_fill_gradient(low = "white", high = "navyblue")
+```
+
+# Forward Selection Approach to Linear Regression Model for Predictors of 4th Grade Reading Levels
+
+**Literature Review:** What factors are most important in predicting
+elementary academic achievement levels?
+
+<https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.>
+
+-   Behavioral skills, are influenced by parental monitoring and family
+    stability
+
+    -   Self-regulation and social competence are two crucial behavioral
+        skills that predict reading level
+
+-   Language minority students demonstrated more weakness in oral
+    comprehension and vocabulary
+
+-   Students of both genders from high-poverty households performed
+    significantly worse in alphabet knowledge, phonological awareness,
+    and spelling
+
+-   High levels of inhibitory control predicts better academic skills in
+    Grade 1
+
+-   Social problem-solving competence is a strong predictor of academic
+    skills
+
+<https://apa.org/pi/ses/resources/publications/education>
+
+-   Low-SES families are less likely to have experiences that encourage
+    the development of critical skills such as phonological awareness,
+    vocabulary, and oral language
+
+-   Reading competency is associated with number of books owned and
+    parental distress
+
+-   Teachers' years of experience and quality of training help predict
+    children's academic achievements
+
+-   There is a higher likelihood of children from lower-SES households
+    displaying learning-related behavior problems
+
+[https://hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:\~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents'%20work%20lives.&text=It's%20no%20secret%20that%20our,our%20lives%20outside%20of%20work.](https://hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents'%20work%20lives.&text=It's%20no%20secret%20that%20our,our%20lives%20outside%20of%20work.)
+
+-   A longitudinal study of 370+ working-class families finds that jobs
+    that allow for more autonomy and more supportive supervisors were
+    warmer and more engaged with their children
+
+-   More intimate parenting styles are associated with early academic
+    achievement in children
+
+-   Anecdotal evidence indicates that when workers feel more trust and
+    flexibility at work, they are more productive and better able to
+    care for children
+
+<https://cepa.stanford.edu/educational-opportunity-monitoring-project/achievement-gaps/race/>
+
+-   A jarring achievement gap amongst students of varying races
+    particularly between white, Black, and Hispanic children
+
+    -   Likely mediated by differences in the socioeconomic statuses of
+        families
+
+<https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association.>
+
+-   High-quality childcare has been rigorously shown to lead to better
+    performance in science, technology, engineering, and math through
+    high school
+
+**Summarized review:** After a review of literature in the field of
+early academic achievement, we find that various social, psychological,
+and economic factors have been found to contribute to the development of
+reading skills in elementary schoolers. Socioeconomic status has been
+consistently shown to influence academic success, specifically due to
+differing access to books, supportive services, and qualified teachers
+as well as due to exposure to adversity and parental distress. The
+structural connections between race, socioecnomic status, and long-term
+outcomes makes racial minority status another potential variable of
+interest. Along with socioeconomic status, parents' capacity to be
+highly engaged and warm affects psychological health, which often
+underpins academic trajectories. Thus, we seek to examine whether having
+both, one, or no working parents affects reading skills, and since, the
+autonomy and support associated with a parent's job has been shown to
+predict positive involvement with children, we also hope to investigate
+the impact of parents' fields of occupation. Finally, it is necessary to
+explore the role of access to both family-based and center-based
+child-care given the proven significance of high-quality child-care.
+
+Cross-referencing research with dataset to identify potential factors
+(most must be created using given variables):
+
+-   Community poverty level
+
+-   Percentage of community that belongs to minority racial status
+
+-   Percent of single-family households Percent of families where both
+    parents work vs. where one parent works
+
+-   Distribution of most common occupations of parents
+
+-   Median cost of family-based childcare
+
+-   Median cost of center-based childcare
+
+```{r}
+#| label: forward-selection-
 ```

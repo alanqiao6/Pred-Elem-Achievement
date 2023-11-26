@@ -154,6 +154,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<section id="loading-packages-and-data" class="level1">
+<h1>Loading Packages and Data</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -194,6 +196,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ 23,450 more rows</code></pre>
 </div>
 </div>
+</section>
+<section id="choropleth-maps" class="level1">
+<h1>Choropleth Maps</h1>
 <p>Code for us_states from Kieran Healy: <code>https://socviz.co/maps.html#map-u.s.-state-level-data</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>expenditures_PK12ed <span class="ot">&lt;-</span> expenditures <span class="sc">|&gt;</span> </span>
@@ -240,8 +245,58 @@ Caused by warning:
 <p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="forward-selection-approach-to-linear-regression-model-for-predictors-of-4th-grade-reading-levels" class="level1">
+<h1>Forward Selection Approach to Linear Regression Model for Predictors of 4th Grade Reading Levels</h1>
+<p><strong>Literature Review:</strong> What factors are most important in predicting elementary academic achievement levels?</p>
+<p><a href="https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately." class="uri">https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.</a></p>
+<ul>
+<li><p>Behavioral skills, are influenced by parental monitoring and family stability</p>
+<ul>
+<li>Self-regulation and social competence are two crucial behavioral skills that predict reading level</li>
+</ul></li>
+<li><p>Language minority students demonstrated more weakness in oral comprehension and vocabulary</p></li>
+<li><p>Students of both genders from high-poverty households performed significantly worse in alphabet knowledge, phonological awareness, and spelling</p></li>
+<li><p>High levels of inhibitory control predicts better academic skills in Grade 1</p></li>
+<li><p>Social problem-solving competence is a strong predictor of academic skills</p></li>
+</ul>
+<p><a href="https://apa.org/pi/ses/resources/publications/education" class="uri">https://apa.org/pi/ses/resources/publications/education</a></p>
+<ul>
+<li><p>Low-SES families are less likely to have experiences that encourage the development of critical skills such as phonological awareness, vocabulary, and oral language</p></li>
+<li><p>Reading competency is associated with number of books owned and parental distress</p></li>
+<li><p>Teachers’ years of experience and quality of training help predict children’s academic achievements</p></li>
+<li><p>There is a higher likelihood of children from lower-SES households displaying learning-related behavior problems</p></li>
+</ul>
+<p><a href="https://hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents'%20work%20lives.&amp;text=It's%20no%20secret%20that%20our,our%20lives%20outside%20of%20work.">https://hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents’%20work%20lives.&amp;text=It’s%20no%20secret%20that%20our,our%20lives%20outside%20of%20work.</a></p>
+<ul>
+<li><p>A longitudinal study of 370+ working-class families finds that jobs that allow for more autonomy and more supportive supervisors were warmer and more engaged with their children</p></li>
+<li><p>More intimate parenting styles are associated with early academic achievement in children</p></li>
+<li><p>Anecdotal evidence indicates that when workers feel more trust and flexibility at work, they are more productive and better able to care for children</p></li>
+</ul>
+<p><a href="https://cepa.stanford.edu/educational-opportunity-monitoring-project/achievement-gaps/race/" class="uri">https://cepa.stanford.edu/educational-opportunity-monitoring-project/achievement-gaps/race/</a></p>
+<ul>
+<li><p>A jarring achievement gap amongst students of varying races particularly between white, Black, and Hispanic children</p>
+<ul>
+<li>Likely mediated by differences in the socioeconomic statuses of families</li>
+</ul></li>
+</ul>
+<p><a href="https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association." class="uri">https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association.</a></p>
+<ul>
+<li>High-quality childcare has been rigorously shown to lead to better performance in science, technology, engineering, and math through high school</li>
+</ul>
+<p><strong>Summarized review:</strong> After a review of literature in the field of early academic achievement, we find that various social, psychological, and economic factors have been found to contribute to the development of reading skills in elementary schoolers. Socioeconomic status has been consistently shown to influence academic success, specifically due to differing access to books, supportive services, and qualified teachers as well as due to exposure to adversity and parental distress. The structural connections between race, socioecnomic status, and long-term outcomes makes racial minority status another potential variable of interest. Along with socioeconomic status, parents’ capacity to be highly engaged and warm affects psychological health, which often underpins academic trajectories. Thus, we seek to examine whether having both, one, or no working parents affects reading skills, and since, the autonomy and support associated with a parent’s job has been shown to predict positive involvement with children, we also hope to investigate the impact of parents’ fields of occupation. Finally, it is necessary to explore the role of access to both family-based and center-based child-care given the proven significance of high-quality child-care.</p>
+<p>Cross-referencing research with dataset to identify potential factors (most must be created using given variables):</p>
+<ul>
+<li><p>Community poverty level</p></li>
+<li><p>Percentage of community that belongs to minority racial status</p></li>
+<li><p>Percent of single-family households Percent of families where both parents work vs.&nbsp;where one parent works</p></li>
+<li><p>Distribution of most common occupations of parents</p></li>
+<li><p>Median cost of family-based childcare</p></li>
+<li><p>Median cost of center-based childcare</p></li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
