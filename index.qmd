@@ -40,7 +40,7 @@ scores <- read_csv("data/scores.csv")
 us_states <- map_data("state")
 ```
 
-# Choropleth Maps 
+# Choropleth Maps
 
 Code for us_states from Kieran Healy:
 `https://socviz.co/maps.html#map-u.s.-state-level-data`
@@ -161,14 +161,12 @@ outcomes makes racial minority status another potential variable of
 interest. Along with socioeconomic status, parents' capacity to be
 highly engaged and warm affects psychological health, which often
 underpins academic trajectories. Thus, we seek to examine whether having
-both, one, or no working parents affects reading skills, and since, the
-autonomy and support associated with a parent's job has been shown to
-predict positive involvement with children, we also hope to investigate
-the impact of parents' fields of occupation. Finally, it is necessary to
-explore the role of access to both family-based and center-based
-child-care given the proven significance of high-quality child-care.
+both, one, or no working parents affects reading skills. Finally, it is
+necessary to explore the role of access to both family-based and
+center-based child care given the proven significance of high-quality
+child care.
 
-Cross-referencing research with dataset to identify potential factors
+Cross-referencing research with our data to identify potential factors
 (most must be created using given variables):
 
 -   Community poverty level
@@ -178,14 +176,12 @@ Cross-referencing research with dataset to identify potential factors
 -   Percent of single-family households Percent of families where both
     parents work vs. where one parent works
 
--   Distribution of most common occupations of parents
-
 -   Median cost of family-based childcare
 
 -   Median cost of center-based childcare
 
 ```{r}
-#| label: forward-selection-model 
+#| label: forward-selection-model-variables
 
 #Family poverty level 
 childcare_costs <- childcare_costs |>
@@ -210,10 +206,25 @@ childcare_costs <- childcare_costs |>
       h_under6_single_m / households
   )
   
-#Ratio of two-parent-working to one-parent-working households 
+#Ratio of one-parent-working to two-parent-working households 
 childcare_costs <- childcare_costs |> 
   mutate(
-    
-    
+    ratio_of_both_to_one = 
+      (h_under6_f_work + h_under6_m_work)/h_under6_both_work
   )
+
+#Cost of center-based child care
+childcare_costs <- childcare_costs |> 
+  mutate(
+    average_center_child_care = 
+    (mc_infant + mc_toddler + mc_preschool)/3
+  )
+
+#Cost of family-based child care |> 
+childcare_costs <- childcare_costs |> 
+  mutate(
+    average_family_child_care = 
+    (mfcc_infant + mfcc_toddler + mfcc_preschool)/3
+  )
+
 ```

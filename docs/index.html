@@ -266,13 +266,12 @@ Caused by warning:
 <ul>
 <li>High-quality childcare has been rigorously shown to lead to better performance in science, technology, engineering, and math through high school</li>
 </ul>
-<p><strong>Summarized review:</strong> After a review of literature in the field of early academic achievement, we find that various social, psychological, and economic factors have been found to contribute to the development of reading skills in elementary schoolers. Socioeconomic status has been consistently shown to influence academic success, specifically due to differing access to books, supportive services, and qualified teachers as well as due to exposure to adversity and parental distress. The structural connections between race, socioecnomic status, and long-term outcomes makes racial minority status another potential variable of interest. Along with socioeconomic status, parents’ capacity to be highly engaged and warm affects psychological health, which often underpins academic trajectories. Thus, we seek to examine whether having both, one, or no working parents affects reading skills, and since, the autonomy and support associated with a parent’s job has been shown to predict positive involvement with children, we also hope to investigate the impact of parents’ fields of occupation. Finally, it is necessary to explore the role of access to both family-based and center-based child-care given the proven significance of high-quality child-care.</p>
-<p>Cross-referencing research with dataset to identify potential factors (most must be created using given variables):</p>
+<p><strong>Summarized review:</strong> After a review of literature in the field of early academic achievement, we find that various social, psychological, and economic factors have been found to contribute to the development of reading skills in elementary schoolers. Socioeconomic status has been consistently shown to influence academic success, specifically due to differing access to books, supportive services, and qualified teachers as well as due to exposure to adversity and parental distress. The structural connections between race, socioecnomic status, and long-term outcomes makes racial minority status another potential variable of interest. Along with socioeconomic status, parents’ capacity to be highly engaged and warm affects psychological health, which often underpins academic trajectories. Thus, we seek to examine whether having both, one, or no working parents affects reading skills. Finally, it is necessary to explore the role of access to both family-based and center-based child care given the proven significance of high-quality child care.</p>
+<p>Cross-referencing research with our data to identify potential factors (most must be created using given variables):</p>
 <ul>
 <li><p>Community poverty level</p></li>
 <li><p>Percentage of community that belongs to minority racial status</p></li>
 <li><p>Percent of single-family households Percent of families where both parents work vs.&nbsp;where one parent works</p></li>
-<li><p>Distribution of most common occupations of parents</p></li>
 <li><p>Median cost of family-based childcare</p></li>
 <li><p>Median cost of center-based childcare</p></li>
 </ul>
@@ -300,12 +299,26 @@ Caused by warning:
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>      h_under6_single_m <span class="sc">/</span> households</span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Ratio of two-parent-working to one-parent-working households </span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Ratio of one-parent-working to two-parent-working households </span></span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>childcare_costs <span class="ot">&lt;-</span> childcare_costs <span class="sc">|&gt;</span> </span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">ratio_of_both_to_one =</span> </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>      (h_under6_f_work <span class="sc">+</span> h_under6_m_work)<span class="sc">/</span>h_under6_both_work</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Cost of center-based child care</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>childcare_costs <span class="ot">&lt;-</span> childcare_costs <span class="sc">|&gt;</span> </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">average_center_child_care =</span> </span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    (mc_infant <span class="sc">+</span> mc_toddler <span class="sc">+</span> mc_preschool)<span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#Cost of family-based child care |&gt; </span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>childcare_costs <span class="ot">&lt;-</span> childcare_costs <span class="sc">|&gt;</span> </span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">average_family_child_care =</span> </span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    (mfcc_infant <span class="sc">+</span> mfcc_toddler <span class="sc">+</span> mfcc_preschool)<span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
