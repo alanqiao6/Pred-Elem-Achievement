@@ -16,7 +16,7 @@ editor:
 | AP           | integer   | Percentage of students at or above Proficient |
 
 | variable                           | class     | description                                               |
-|:--------------------|:--------------|:-----------------------------------|
+|:-----------------------------------|:----------|:----------------------------------------------------------|
 | Location                           | character | state name                                                |
 | Elementary and Secondary Education | character | state spending (\$) in elementary and secondary education |
 | Higher Education                   | character | state spending (\$) in higher education                   |
