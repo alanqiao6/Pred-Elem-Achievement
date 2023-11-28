@@ -14,8 +14,9 @@ editor:
 #| message: false 
 
 library(tidyverse)
+library(tidymodels)
 library(maps)
-
+library(leaps)
 ```
 
 ```{r}
@@ -98,7 +99,6 @@ renamed_scores <- scores |>
 
 #Merging all data
 merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_name"))
-
 
 ```
 
@@ -207,11 +207,11 @@ Cross-referencing research with our data to identify potential factors
 #| label: forward-selection-model-variables
 
 #Family poverty level 
-childcare_costs <- childcare_costs |>
+merged_data <- merged_data |>
   mutate(family_poverty = pr_f)
 
 #Minority racial status 
-childcare_costs <- childcare_costs |> 
+merged_data <- merged_data |> 
   mutate(
     minority_racial_status = 
       one_race_b +
@@ -223,31 +223,43 @@ childcare_costs <- childcare_costs |>
   )
 
 #Percentage of single-mother households 
-childcare_costs <- childcare_costs |> 
+merged_data <- merged_data |> 
   mutate(
     percentage_single_mother =
       h_under6_single_m / households
   )
   
 #Ratio of one-parent-working to two-parent-working households 
-childcare_costs <- childcare_costs |> 
+merged_data <- merged_data |> 
   mutate(
-    ratio_of_both_to_one = 
-      (h_under6_f_work + h_under6_m_work)/h_under6_both_work
+    one_parent_households = h_under6_f_work + h_under6_f_work, 
+    ratio_of_one_to_both = one_parent_households / h_under6_both_work
   )
 
 #Cost of center-based child care
-childcare_costs <- childcare_costs |> 
+merged_data <- merged_data |> 
   mutate(
     average_center_child_care = 
     (mc_infant + mc_toddler + mc_preschool)/3
   )
 
-#Cost of family-based child care |> 
-childcare_costs <- childcare_costs |> 
+#Cost of family-based child care 
+merged_data <- merged_data |> 
   mutate(
     average_family_child_care = 
     (mfcc_infant + mfcc_toddler + mfcc_preschool)/3
   )
+```
+
+# Conducting Forward Selection
+
+```{r}
+#| label: forward-selection-model 
+
+#Creating regression model with all possible variables 
+maximum_regression_model <- linear_reg() |>
+  fit(MN ~ family_poverty, minority_racial_status, percentage_single_mother, ratio_of_one_to_both, average_center_child_care, average_family_child_care, data = merged_data)
+
+
 
 ```
