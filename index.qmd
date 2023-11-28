@@ -84,6 +84,24 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   scale_fill_gradient(low = "white", high = "navyblue")
 ```
 
+# Merging Data
+
+```{r}
+#| label: merging-data 
+
+#Merging childcare_costs and counties 
+merged_counties_data <- left_join(childcare_costs, counties, join_by("county_fips_code"))
+
+#Preparing scores to merge
+renamed_scores <- scores |> 
+  rename("state_name" = "Jurisdiction")
+
+#Merging all data
+merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_name"))
+
+
+```
+
 # Forward Selection Approach to Linear Regression Model for Predictors of 4th Grade Reading Levels
 
 **Literature Review:** What factors are most important in predicting
@@ -176,8 +194,10 @@ Cross-referencing research with our data to identify potential factors
 
 -   Percentage of community that belongs to minority racial status
 
--   Percent of single-family households Percent of families where both
-    parents work vs. where one parent works
+-   Percent of single-family households
+
+-   Percent of families where both parents work vs. where one parent
+    works
 
 -   Median cost of family-based childcare
 
