@@ -17,6 +17,7 @@ library(tidyverse)
 library(tidymodels)
 library(maps)
 library(leaps)
+library(dplyr)
 ```
 
 ```{r}
@@ -257,9 +258,16 @@ merged_data <- merged_data |>
 #| label: forward-selection-model 
 
 #Creating regression model with all possible variables 
+merged_data <- merged_data |> 
+  filter(!is.na(MN)) |>
+  filter(!is.na(family_poverty)) |>
+  filter(!is.na(percentage_single_mother)) |>
+  filter(!is.na(ratio_of_one_to_both)) |>
+  filter(!is.na(average_center_child_care)) |>
+  filter(!is.na(average_family_child_care)) |>
+  mutate(
+   MN = as.numeric(MN)) 
+
 maximum_regression_model <- linear_reg() |>
-  fit(MN ~ family_poverty, minority_racial_status, percentage_single_mother, ratio_of_one_to_both, average_center_child_care, average_family_child_care, data = merged_data)
-
-
-
+  fit(MN ~ family_poverty + percentage_single_mother + average_center_child_care, data = merged_data)
 ```
