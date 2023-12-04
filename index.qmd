@@ -259,8 +259,12 @@ merged_data <- merged_data |>
 ```{r}
 #| label: forward-selection-model 
 
+#filtering by year 
+merged_data_2018 <- merged_data |> 
+  filter(study_year == "2018")
+
 #Creating regression model with all possible variables 
-merged_data <- merged_data |> 
+merged_data_2018 <- merged_data_2018 |> 
   filter(!is.na(MN),
          !is.na(family_poverty),
          !is.na(percentage_single_mother),
@@ -273,5 +277,19 @@ merged_data <- merged_data |>
    MN = as.numeric(MN)) 
 
 maximum_regression_model <- linear_reg() |>
-  fit(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data)
+  fit(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+```
+
+```{r}
+#Preparing data
+best_states_data <- merged_data_2018 |> 
+  arrange(desc(MN)) |>
+  mutate(achievement_level = if_else(MN>=225, "High", "Low")) |>
+  filter(achievement_level == "High") |>
+  relocate(state_name) |> 
+  pivot_longer(
+    cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
+    names_to = "sector_type", 
+    values_to = "sector_percentage"
+  )
 ```
