@@ -64,9 +64,10 @@ us_states_expenditures <- us_states |>
 
 ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
   geom_polygon() +
-  guides(fill = FALSE) + 
   theme_void() + 
-  scale_fill_gradient(low = "white", high = "navyblue")
+  scale_fill_gradient(low = "gray90", high = "navyblue") +
+  theme(legend.position = c(.2, .1),
+        legend.direction = "horizontal")
 ```
 
 ```{r}
@@ -80,10 +81,11 @@ us_states_scores <- us_states |>
   inner_join(scores_new, join_by(region == region), relationship = "many-to-many")
 
 ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
-  geom_polygon() +
-  guides(fill = FALSE) + 
+  geom_polygon() + 
   theme_void() + 
-  scale_fill_gradient(low = "white", high = "navyblue")
+  scale_fill_gradient(low = "gray90", high = "navyblue") +
+  theme(legend.position = c(.2, .1),
+        legend.direction = "horizontal")
 ```
 
 # Merging Data
@@ -259,15 +261,17 @@ merged_data <- merged_data |>
 
 #Creating regression model with all possible variables 
 merged_data <- merged_data |> 
-  filter(!is.na(MN)) |>
-  filter(!is.na(family_poverty)) |>
-  filter(!is.na(percentage_single_mother)) |>
-  filter(!is.na(ratio_of_one_to_both)) |>
-  filter(!is.na(average_center_child_care)) |>
-  filter(!is.na(average_family_child_care)) |>
+  filter(!is.na(MN),
+         !is.na(family_poverty),
+         !is.na(percentage_single_mother),
+         !is.na(ratio_of_one_to_both),
+         !is.na(average_center_child_care),
+         !is.na(average_family_child_care),
+         !is.na(one_parent_households),
+         ratio_of_one_to_both != 'Inf') |>
   mutate(
    MN = as.numeric(MN)) 
 
 maximum_regression_model <- linear_reg() |>
-  fit(MN ~ family_poverty + percentage_single_mother + average_center_child_care, data = merged_data)
+  fit(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data)
 ```
