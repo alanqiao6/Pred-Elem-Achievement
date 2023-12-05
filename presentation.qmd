@@ -1,8 +1,10 @@
 ---
-title: "Project title"
+title: "Identifying Discrepencies and Predictors of Early Academic Achievement Across the United States"
 subtitle: "STA 113FS - Fall 2023 - Project 2"
-author: "Team Name"
-format: revealjs
+author: "JanIce"
+format: 
+  revealjs:
+    theme: simple
 editor: visual
 execute:
   echo: false
@@ -12,12 +14,11 @@ execute:
 #| label: load-packages
 #| include: false
 
-# Add any additional packages you need to this chunk
-# Remove any packages from this list that you're not using
 library(tidyverse)
 library(tidymodels)
-library(palmerpenguins)
-library(gt)
+library(maps)
+library(dplyr)
+library(scales)
 ```
 
 ```{r}
@@ -38,14 +39,31 @@ knitr::opts_chunk$set(
 #| label: load-data
 #| include: false
 
-# Load your data here
+#loading dataset childcare_costs
+childcare_costs <- read_csv("data/childcare_costs.csv")
+
+#loading dataset counties
+counties <- read_csv("data/counties.csv")
+
+#loading dataset expenditures
+expenditures <- read_csv("data/kids.csv")
+
+#loading dataset scores
+scores <- read_csv("data/scores.csv")
+
+#loading us map 
+us_states <- map_data("state")
 ```
 
-# Using Quarto for presentations
+## Contextualizing Elementary Educational Inequity
 
-## Quarto
+-   HI
 
--   The presentation is created using the Quarto CLI
+-   HI
+
+-   HI
+
+-   
 
 -   `##` sets the start of a new slide
 
@@ -57,11 +75,12 @@ You can use plain text
 
 ::: columns
 ::: {.column width="50%"}
-or text in two columns $^*$
+
+TERESTING STRUCTURE
 :::
 
 ::: {.column width="50%"}
--   like
+-   iNTlike
 -   this
 :::
 :::
@@ -152,7 +171,7 @@ If you want to generate a table, make sure it is in the HTML format (instead of 
 ```{r}
 #| label: penguins-table
 
-gt(head(penguins))
+
 ```
 
 ## Images
