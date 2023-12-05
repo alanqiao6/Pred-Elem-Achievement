@@ -337,3 +337,202 @@ ggplot(summarized_data, aes(x = state_name, y = mean_percentage, fill = sector_t
 
 
 ```
+
+```{r}
+
+regression_model_1 <- lm(MN ~ family_poverty, data = merged_data_2018)
+
+regression_model_2 <- lm(MN ~ percentage_single_mother, data = merged_data_2018)
+
+regression_model_3 <- lm(MN ~ average_center_child_care, data = merged_data_2018)
+
+regression_model_4 <- lm(MN ~ average_family_child_care, data = merged_data_2018)
+
+regression_model_5 <- lm(MN ~ one_parent_households, data = merged_data_2018)
+
+regression_model_6 <- lm(MN ~ ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_7 <- lm(MN ~ family_poverty + percentage_single_mother, data = merged_data_2018)
+
+regression_model_8 <- lm(MN ~ family_poverty + average_center_child_care, data = merged_data_2018)
+
+regression_model_9 <- lm(MN ~ family_poverty + average_family_child_care, data = merged_data_2018)
+
+regression_model_10 <- lm(MN ~ family_poverty + one_parent_households, data = merged_data_2018)
+
+regression_model_11 <- lm(MN ~ family_poverty + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_12 <- lm(MN ~ percentage_single_mother + average_center_child_care, data = merged_data_2018)
+
+regression_model_13 <- lm(MN ~ percentage_single_mother + average_family_child_care, data = merged_data_2018)
+
+regression_model_14 <- lm(MN ~ percentage_single_mother + one_parent_households, data = merged_data_2018)
+
+regression_model_15 <- lm(MN ~ percentage_single_mother + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_16 <- lm(MN ~ average_center_child_care + average_family_child_care, data = merged_data_2018)
+
+regression_model_17 <- lm(MN ~ average_center_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_18 <- lm(MN ~ average_center_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_19 <- lm(MN ~ average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_20 <- lm(MN ~ average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_21 <- lm(MN ~ one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_22 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care, data = merged_data_2018)
+
+regression_model_23 <- lm(MN ~ family_poverty + percentage_single_mother + average_family_child_care, data = merged_data_2018)
+
+regression_model_24 <- lm(MN ~ family_poverty + percentage_single_mother + one_parent_households, data = merged_data_2018)
+
+regression_model_25 <- lm(MN ~ family_poverty + percentage_single_mother + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_26 <- lm(MN ~ family_poverty + average_center_child_care + average_family_child_care, data = merged_data_2018)
+
+regression_model_27 <- lm(MN ~ family_poverty + average_center_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_28 <- lm(MN ~ family_poverty + average_center_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_29 <- lm(MN ~ family_poverty + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_30 <- lm(MN ~ family_poverty + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_31 <- lm(MN ~ family_poverty + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_32 <- lm(MN ~ percentage_single_mother + average_center_child_care + average_family_child_care, data = merged_data_2018)
+
+regression_model_33 <- lm(MN ~ percentage_single_mother + average_center_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_34 <- lm(MN ~ percentage_single_mother + average_center_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_35 <- lm(MN ~ percentage_single_mother + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_36 <- lm(MN ~ percentage_single_mother + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_37 <- lm(MN ~ percentage_single_mother + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_38 <- lm(MN ~ average_center_child_care + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_39 <- lm(MN ~ average_center_child_care + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_40 <- lm(MN ~ average_center_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_41 <- lm(MN ~ average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_42 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care, data = merged_data_2018)
+
+regression_model_43 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_44 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_45 <- lm(MN ~ family_poverty + percentage_single_mother + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_46 <- lm(MN ~ family_poverty + percentage_single_mother + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_47 <- lm(MN ~ family_poverty + percentage_single_mother + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_48 <- lm(MN ~ family_poverty + average_center_child_care + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_49 <- lm(MN ~ family_poverty + average_center_child_care + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_50 <- lm(MN ~ family_poverty + average_center_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_51 <- lm(MN ~ family_poverty + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_52 <- lm(MN ~ percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_53 <- lm(MN ~ percentage_single_mother + average_center_child_care + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_54 <- lm(MN ~ percentage_single_mother + average_center_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_55 <- lm(MN ~ percentage_single_mother + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_56 <- lm(MN ~ average_center_child_care + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_57 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_58 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_59 <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_60 <- lm(MN ~ family_poverty + percentage_single_mother + average_family_child_care + ratio_of_one_to_both + one_parent_households, data = merged_data_2018)
+
+regression_model_61 <- lm(MN ~ family_poverty + ratio_of_one_to_both + average_center_child_care + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+regression_model_62 <- lm(MN ~ ratio_of_one_to_both + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households, data = merged_data_2018)
+
+maximum_regression_model <- lm(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+damm <- c(summary(regression_model_1)$adj.r.squared, 
+          summary(regression_model_2)$adj.r.squared, 
+          summary(regression_model_3)$adj.r.squared, 
+          summary(regression_model_4)$adj.r.squared, 
+          summary(regression_model_5)$adj.r.squared, 
+          summary(regression_model_6)$adj.r.squared, 
+          summary(regression_model_7)$adj.r.squared, 
+          summary(regression_model_8)$adj.r.squared, 
+          summary(regression_model_9)$adj.r.squared, 
+          summary(regression_model_10)$adj.r.squared, 
+          summary(regression_model_11)$adj.r.squared, 
+          summary(regression_model_12)$adj.r.squared, 
+          summary(regression_model_13)$adj.r.squared, 
+          summary(regression_model_14)$adj.r.squared, 
+          summary(regression_model_15)$adj.r.squared, 
+          summary(regression_model_16)$adj.r.squared, 
+          summary(regression_model_17)$adj.r.squared, 
+          summary(regression_model_18)$adj.r.squared, 
+          summary(regression_model_19)$adj.r.squared, 
+          summary(regression_model_20)$adj.r.squared, 
+          summary(regression_model_21)$adj.r.squared, 
+          summary(regression_model_22)$adj.r.squared, 
+          summary(regression_model_23)$adj.r.squared, 
+          summary(regression_model_24)$adj.r.squared, 
+          summary(regression_model_25)$adj.r.squared, 
+          summary(regression_model_26)$adj.r.squared, 
+          summary(regression_model_27)$adj.r.squared, 
+          summary(regression_model_28)$adj.r.squared, 
+          summary(regression_model_29)$adj.r.squared, 
+          summary(regression_model_30)$adj.r.squared, 
+          summary(regression_model_31)$adj.r.squared, 
+          summary(regression_model_32)$adj.r.squared,
+          summary(regression_model_33)$adj.r.squared, 
+          summary(regression_model_34)$adj.r.squared, 
+          summary(regression_model_35)$adj.r.squared, 
+          summary(regression_model_36)$adj.r.squared, 
+          summary(regression_model_37)$adj.r.squared, 
+          summary(regression_model_38)$adj.r.squared, 
+          summary(regression_model_39)$adj.r.squared, 
+          summary(regression_model_40)$adj.r.squared, 
+          summary(regression_model_41)$adj.r.squared, 
+          summary(regression_model_42)$adj.r.squared, 
+          summary(regression_model_43)$adj.r.squared, 
+          summary(regression_model_44)$adj.r.squared, 
+          summary(regression_model_45)$adj.r.squared, 
+          summary(regression_model_46)$adj.r.squared, 
+          summary(regression_model_47)$adj.r.squared, 
+          summary(regression_model_48)$adj.r.squared,
+          summary(regression_model_49)$adj.r.squared, 
+          summary(regression_model_50)$adj.r.squared, 
+          summary(regression_model_51)$adj.r.squared, 
+          summary(regression_model_52)$adj.r.squared, 
+          summary(regression_model_53)$adj.r.squared, 
+          summary(regression_model_54)$adj.r.squared, 
+          summary(regression_model_55)$adj.r.squared, 
+          summary(regression_model_56)$adj.r.squared, 
+          summary(regression_model_57)$adj.r.squared, 
+          summary(regression_model_58)$adj.r.squared, 
+          summary(regression_model_59)$adj.r.squared, 
+          summary(regression_model_60)$adj.r.squared, 
+          summary(regression_model_61)$adj.r.squared, 
+          summary(regression_model_62)$adj.r.squared, 
+          summary(maximum_regression_model)$adj.r.squared)
+
+final <- as.data.frame(damm)
+
+max_r_squared <- max(final)
+
+final
+```
