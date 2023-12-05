@@ -70,7 +70,8 @@ ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
         legend.direction = "horizontal") + 
-  coord_quickmap()
+  coord_quickmap() + 
+  labs(title = "Expenditures Based on State", fill = "Expenditure \nper Child \n(in thousands)")
 ```
 
 ```{r}
@@ -89,7 +90,8 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
         legend.direction = "horizontal") + 
-  coord_quickmap()
+  coord_quickmap() + 
+  labs(title = "Achievement Rates Based on State", fill = "Average 4th Grade \nReading Score")
 ```
 
 # Merging Data
