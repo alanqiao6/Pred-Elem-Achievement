@@ -4,9 +4,9 @@ format: html
 editor: visual
 ---
 
-This project was developed by **\_\_\_\_** For [STA 113FS: Visualizing Data](#0) at Duke University. The team is comprised of the following team members.
+This project was developed by Noah Tajudeen, Anushka Kumar, Julia Healy-Parera, and Alan Qiao For [STA 113FS: Visualizing Data](#0) at Duke University. The team is comprised of the following team members.
 
--   Team member 1: **\_\_\_**
--   Team member 2: **\_\_\_**
--   Team member 3: **\_\_\_**
--   Team member 4: **\_\_\_**
+-   Noah Tajudeen is a freshman at Duke University. He is pursuing public policy and chemistry.
+-   Anushka Kumar is a freshman at Duke University. She is pursuing neuroscience and public policy.
+-   Julia Healy-Parera is a freshman at Duke University. She is pursuing computer science and statistical science.
+-   Alan Qiao is a freshman at Duke University. He is pursuing math and economics.
