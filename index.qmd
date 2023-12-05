@@ -304,55 +304,6 @@ regression_model_1 <- linear_reg() |>
 ```
 
 ```{r}
-#Preparing data
-best_states_data <- merged_data_2018 |> 
-  arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
-  filter(achievement_level == "High")
-
-best_states_data <- best_states_data |>
-  relocate(state_name) |> 
-  pivot_longer(
-    cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
-    names_to = "sector_type", 
-    values_to = "sector_percentage"
-  ) |>
-  mutate(sector_type = case_when(
-    sector_type == "emp_m" ~ "Management and Science", 
-    sector_type == "emp_n" ~ "Natural Resources", 
-    sector_type == "emp_p" ~ "Production", 
-    sector_type == "emp_service" ~ "Public Service",
-    sector_type == "emp_sales" ~ "Sales and Office"
-    ), 
-    state_name = case_when(
-      state_name == "Massachusetts" ~ "MA", 
-      state_name == "New Hampshire" ~ "NH",
-      state_name == "New Jersey" ~ "NJ",
-      state_name == "Wyoming" ~ "WY"
-    )
-  )
-
-#Grouping and summarizing data 
-summarized_data <- best_states_data |>
-  group_by(state_name, sector_type) |>
-  summarize(mean_percentage = mean(sector_percentage)) 
-```
-
-```{r}
-#| label: visualizing-states
-#| fig-asp: 0.6
-
-#Creating visualization
-ggplot(summarized_data, aes(x = state_name, y = mean_percentage, fill = sector_type)) + 
-  geom_bar(stat = "identity") + 
-  scale_fill_viridis_d(option = "G") +
-  theme_bw() + 
-  labs(title = "Breakdown of Workplace Sectors \n by Proportion of State Population", x = "State", y = "Percentage of Population", fill = "Sector")
-
-
-```
-
-```{r}
 #| label: creating-all-regression-models
 
 regression_model_1 <- lm(MN ~ family_poverty, data = merged_data_2018)
@@ -918,7 +869,6 @@ final <- data.frame(model_name, r_squared)
 
 final_model <- final |>
   filter(r_squared == max(r_squared))
-
 ```
 
 Using reproducible R code, we were able to find the regression model
@@ -932,6 +882,77 @@ the predictors of `family_poverty` , `ratio_of_one_to_both`,
 #| label: model-tidy-output
 
 tidy(regression_model_61)
+```
+
+```{r}
+#| label: preparing-data-for-vis-4
+
+#Preparing data
+best_states_data <- merged_data_2018 |> 
+  arrange(desc(MN)) |>
+  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  filter(achievement_level == "High")
+
+best_states_data <- best_states_data |>
+  relocate(state_name) |> 
+  pivot_longer(
+    cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
+    names_to = "sector_type", 
+    values_to = "sector_percentage"
+  ) |>
+  mutate(sector_type = case_when(
+    sector_type == "emp_m" ~ "Management and Science", 
+    sector_type == "emp_n" ~ "Natural Resources", 
+    sector_type == "emp_p" ~ "Production", 
+    sector_type == "emp_service" ~ "Public Service",
+    sector_type == "emp_sales" ~ "Sales and Office"
+    ), 
+    state_name = case_when(
+      state_name == "Massachusetts" ~ "MA", 
+      state_name == "New Hampshire" ~ "NH",
+      state_name == "New Jersey" ~ "NJ",
+      state_name == "Wyoming" ~ "WY"
+    )
+  )
+
+#Grouping and summarizing data 
+summarized_data <- best_states_data |>
+  group_by(state_name, sector_type) |>
+  summarize(mean_percentage = mean(sector_percentage))
+
+
+#Trying somethign new
+summarized_data_1 <- best_states_data |>
+  group_by(county_fips_code, study_year) |>
+  summarize(sum_percentage = sum(sector_percentage))
+
+summarized_data_2 <- best_states_data |>
+  group_by(state_name, sector_type, study_year) |>
+  summarize(mean_percentage = mean(sector_percentage))
+  
+#Merging data 
+merged_intermediary_data <- left_join(best_states_data, summarized_data_1, join_by(county_fips_code, study_year))
+
+merged_final_data <- left_join(merged_intermediary_data, summarized_data_2, join_by(state_name, sector_type, study_year))
+```
+
+```{r}
+#| label: visualizing-states
+#| fig-asp: 0.6
+
+#Creating visualization
+ggplot(summarized_data, aes(x = state_name, y = mean_percentage, fill = sector_type)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_viridis_d(option = "G") +
+  theme_bw() + 
+  labs(title = "Breakdown of Workplace Sectors \n by Proportion of State Population", x = "State", y = "Percentage of Population", fill = "Sector")
+
+#Trying something new 
+merged_final_data |> 
+  filter(state_name == "Massachusetts") |>
+  ggplot(aes(x = study_year, y = sum_percentage, fill = mean_percentage, color = sector_type)) + 
+  geom_density(stat = "identity") 
+
 ```
 
 # Write-Up
@@ -980,6 +1001,12 @@ data in `childcare_costs` with the state-based data in `scores`. The
 `r nrow(expenditures)` observations. From this dataset, we were
 interested in examining `inf_adj_perchild`, or total government spending
 on educational resources per child adjusted for inflation. 
+
+The `scores` data are from 2022, while the `childcare_costs` and
+`expenditures` data are from 2018 and 2016, respectively. We thought
+this was acceptable in the context because it is realistic for there to
+be a years-long delay between changes in community funding and resources
+and subsequent academic improvements.
 
 **Findings:**
 
@@ -1136,8 +1163,8 @@ We could only look at the heterogeneity between states rather than the
 heterogeneity within states as well. Also, we could not examine
 longitudinal trends; we only had scores from 2022, so we opted to use
 community data from 2018, the most recent year of inputted data in
-`childcare_costs`, thus producing an arbitrary discrepancy with regard
-to time. Moreover, in the field of childhood education, standardized
+`childcare_costs`, thus producing an arbitrary inference concerning
+time-delay. Moreover, in the field of childhood education, standardized
 tests have persistently been delegitimized as they are not truly
 baseline ways to measure aptitude, potential, and achievement when other
 confounding variables such as disability or neurodiversity exist as we
@@ -1146,7 +1173,7 @@ future research should determine predictors of academic success at the
 county level, which will facilitate more specific conclusions and data
 points that can be used in the training of regression models.
 Additionally, interactive visualizations can be pioneered to represent
-changes in reading_level and corresponding predictors over time.
+changes in `reading_level` and corresponding predictors over time.
 Research effort should also be made to replicate these analyses but with
 a more holistic outcome measure, such as overall classroom functioning
 as reported by teachers.
