@@ -1019,38 +1019,38 @@ preliminary conclusions on the impact of public investments into youth
 education and enables us to start identifying states that may have
 particularly cost-effective educational systems. INSERT MAIN FINDING. 
 
-Our [final_regression_model]{.underline} addresses goal #3. A
-foundational literature review implicates several social, psychological,
-and economic in the development of reading skills in elementary
-schoolers. Socioeconomic status has been consistently shown to influence
-academic success, specifically due to differing access to books,
-supportive services, and qualified teachers as well as due to exposure
-to adversity and parental distress. The structural connections between
-race, socioecnomic status, and long-term outcomes makes racial minority
-status another potential variable of interest. Along with socioeconomic
-status, parents' capacity to be highly engaged and sincerely warm
-affects psychological health, which often underpins academic
-trajectories. Thus, we seek to examine whether having both, one, or no
-working parents affects reading skills. Finally, it is necessary to
-explore the role of access to both family-based and center-based child
-care given the proven significance of high-quality child care. We
-cross-reference these findings with our data to create a number of
-variables of interest. We constructed `family_poverty`, which was
-renamed from `pr_f` and gives the poverty rate in the given county and
-`minority_racial_status`, which is the percent of the county population
-that identifies as one minority racial identity or as biracial. We also
-developed `percentage_single_mother`, which is the number of households
-with single mothers, divided by the total number of `households`. We
-designed another variable for the ratio of households with one working
-parent to two working parents: `ratio_of_one_to_both`. By simply
-renaming, we created `average_center_child_care` and
-`average_family_child_care`, the average cost of center-based and
-family-based child care, respectively, in the given county. We first
-engineered a maximum additive regression model with all the possible
-predictors, and then, we manually performed forward selection to
-determine what combination of the predictors yielded a model with the
-lowest adjusted R2. The models were sorted based on adjusted-R2 using
-the XXX, which XXX. We find that XXX. 
+Our `final_model` addresses goal #3. A foundational literature review
+implicates several social, psychological, and economic in the
+development of reading skills in elementary schoolers. Socioeconomic
+status has been consistently shown to influence academic success,
+specifically due to differing access to books, supportive services, and
+qualified teachers as well as due to exposure to adversity and parental
+distress. The structural connections between race, socioecnomic status,
+and long-term outcomes makes racial minority status another potential
+variable of interest. Along with socioeconomic status, parents' capacity
+to be highly engaged and sincerely warm affects psychological health,
+which often underpins academic trajectories. Thus, we seek to examine
+whether having both, one, or no working parents affects reading skills.
+Finally, it is necessary to explore the role of access to both
+family-based and center-based child care given the proven significance
+of high-quality child care. We cross-reference these findings with our
+data to create a number of variables of interest. We constructed
+`family_poverty`, which was renamed from `pr_f` and gives the poverty
+rate in the given county and `minority_racial_status`, which is the
+percent of the county population that identifies as one minority racial
+identity or as biracial. We also developed `percentage_single_mother`,
+which is the number of households with single mothers, divided by the
+total number of `households`. We designed another variable for the ratio
+of households with one working parent to two working parents:
+`ratio_of_one_to_both`. By simply renaming, we created
+`average_center_child_care` and `average_family_child_care`, the average
+cost of center-based and family-based child care, respectively, in the
+given county. We first engineered a maximum additive regression model
+with all the possible predictors, and then, we manually performed
+forward selection to determine what combination of the predictors
+yielded a model with the lowest adjusted R2. The models were sorted
+based on adjusted-R2. We created a dataset with which XXX. We find that
+XXX. 
 
 Visualization #4 is rooted in goal #4. We have always been committed to
 creating a visualization that zooms in on states with the highest values
