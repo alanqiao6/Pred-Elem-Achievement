@@ -368,32 +368,55 @@ JanIce
 
 <aside><div>
 <p>[*] And add footnotes</p>
+<section id="section-1" class="slide level2">
+<h2></h2>
+</section>
 </div></aside></section>
-<section id="code" class="slide level2">
-<h2>Code</h2>
+<section id="choropleth-map-2016-expenditures" class="slide level2">
+<h2>Choropleth Map: 2016 Expenditures</h2>
+
+<img data-src="presentation_files/figure-revealjs/us-map-expenditures-1.png" style="width:70.0%" alt="This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Expenditures Based on State' and is mapping 2016 state expenditures on education per child, adjusted for inflation, into each state. From this visualization, we see that states in the Northeast, namely New York, New Jersey, and Vermont, appear to provide the most funding to their students (at around $13,000). We can also see that states in the South and West, specifically New Mexico, Idaho, and Utah, have the lowest expenditure per child (at around $2,500). Most of the Midwest appears to have average per child expenditures, but Wyoming stands out as having significantly greater amounts allotted towards this." class="r-stretch"></section>
+<section id="choropleth-map-2022-scores" class="slide level2">
+<h2>Choropleth Map: 2022 Scores</h2>
+
+<img data-src="presentation_files/figure-revealjs/us-map-scores-1.png" style="width:70.0%" alt="This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states." class="r-stretch"></section>
+<section id="visualization-3-state-achievement-comparisons" class="slide level2">
+<h2>Visualization #3: State Achievement Comparisons</h2>
+</section>
+<section id="linear-model-literature-review-choosing-predictors-for-forward-selection" class="slide level2">
+<h2>Linear Model Literature Review: Choosing Predictors for Forward Selection</h2>
+<ul>
+<li><p>1</p></li>
+<li><p>2</p></li>
+<li><p>3</p></li>
+<li><p>4</p></li>
+</ul>
+</section>
+<section id="final-regression-model-61" class="slide level2">
+<h2>Final Regression Model (#61)</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2
-2 speed           3.93     0.416      9.46 1.49e-12</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 12
-  r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
-      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1     0.651         0.644  15.4      89.6 1.49e-12     1  -207.  419.  425.
-# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+<pre><code># A tibble: 6 × 5
+  term                          estimate  std.error statistic  p.value
+  &lt;chr&gt;                            &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)               215.         0.378         568.   0       
+2 family_poverty             -0.0707     0.0140         -5.04 5.12e- 7
+3 ratio_of_one_to_both       -0.280      0.0636         -4.40 1.14e- 5
+4 average_center_child_care  -0.0164     0.00371        -4.42 1.02e- 5
+5 average_family_child_care   0.0360     0.00516         6.99 3.64e-12
+6 one_parent_households      -0.00000635 0.00000536     -1.18 2.36e- 1</code></pre>
 </div>
 </div>
+<p><span class="math display">\[\bar{score}=-0.0707{(familypoverty)} - 0.280{(ratioofonetotboth) \\- 0.0164{(averagecenterchildcare)} \\+ 0.0360{(averagefamilychildcare)} \\- 0.00000635{(oneparenthouseholds)}} \\+ 215\]</span></p>
 </section>
-<section id="plots" class="slide level2">
-<h2>Plots</h2>
-
-<img data-src="presentation_files/figure-revealjs/plot-penguins-1.png" style="width:70.0%" alt="Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all the others combined together. There is a relatively strong, positive relationship between the two variables. The Adelie penguins are clustered together but they don't exhibit a different trend than the rest of the penguins." class="r-stretch"></section>
-<section id="plot-and-text" class="slide level2">
-<h2>Plot and text</h2>
+<section id="take-aways" class="slide level2">
+<h2>Take-Aways</h2>
+<ul>
+<li></li>
+</ul>
+</section>
+<section id="extra-templates" class="slide level2">
+<h2>Extra Templates</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -405,7 +428,7 @@ JanIce
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/unnamed-chunk-7-1.png" style="width:100.0%"></p>
+<p><img data-src="presentation_files/figure-revealjs/unnamed-chunk-15-1.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
