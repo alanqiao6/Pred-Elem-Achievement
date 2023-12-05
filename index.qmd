@@ -18,6 +18,7 @@ library(tidymodels)
 library(maps)
 library(leaps)
 library(dplyr)
+library(scales)
 ```
 
 ```{r}
@@ -56,7 +57,8 @@ expenditures_PK12ed <- expenditures |>
 
 us_states_expenditures <- us_states |>
   select(-subregion) |>
-  inner_join(expenditures_PK12ed, join_by(region == region), relationship = "many-to-many")
+  inner_join(expenditures_PK12ed, join_by(region == region), relationship = "many-to-many") |> 
+  filter(region != "district of columbia")
 ```
 
 ```{r}
@@ -65,9 +67,10 @@ us_states_expenditures <- us_states |>
 ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
   geom_polygon() +
   theme_void() + 
-  scale_fill_gradient(low = "gray90", high = "navyblue") +
+  scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
-        legend.direction = "horizontal")
+        legend.direction = "horizontal") + 
+  coord_quickmap()
 ```
 
 ```{r}
@@ -83,9 +86,10 @@ us_states_scores <- us_states |>
 ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   geom_polygon() + 
   theme_void() + 
-  scale_fill_gradient(low = "gray90", high = "navyblue") +
+  scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
-        legend.direction = "horizontal")
+        legend.direction = "horizontal") + 
+  coord_quickmap()
 ```
 
 # Merging Data
@@ -278,18 +282,56 @@ merged_data_2018 <- merged_data_2018 |>
 
 maximum_regression_model <- linear_reg() |>
   fit(MN ~ family_poverty + percentage_single_mother + average_center_child_care + average_family_child_care + one_parent_households + ratio_of_one_to_both, data = merged_data_2018)
+
+regression_model_1 <- linear_reg() |> 
+  fit(MN ~ family_poverty, data = merged_data_2018)
 ```
 
 ```{r}
 #Preparing data
 best_states_data <- merged_data_2018 |> 
   arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=225, "High", "Low")) |>
-  filter(achievement_level == "High") |>
+  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  filter(achievement_level == "High")
+
+best_states_data <- best_states_data |>
   relocate(state_name) |> 
   pivot_longer(
     cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
     names_to = "sector_type", 
     values_to = "sector_percentage"
+  ) |>
+  mutate(sector_type = case_when(
+    sector_type == "emp_m" ~ "Management and Science", 
+    sector_type == "emp_n" ~ "Natural Resources", 
+    sector_type == "emp_p" ~ "Production", 
+    sector_type == "emp_service" ~ "Public Service",
+    sector_type == "emp_sales" ~ "Sales and Office"
+    ), 
+    state_name = case_when(
+      state_name == "Massachusetts" ~ "MA", 
+      state_name == "New Hampshire" ~ "NH",
+      state_name == "New Jersey" ~ "NJ",
+      state_name == "Wyoming" ~ "WY"
+    )
   )
+
+#Grouping and summarizing data 
+summarized_data <- best_states_data |>
+  group_by(state_name, sector_type) |>
+  summarize(mean_percentage = mean(sector_percentage)) 
+```
+
+```{r}
+#| label: visualizing-states
+#| fig-asp: 0.6
+
+#Creating visualization
+ggplot(summarized_data, aes(x = state_name, y = mean_percentage, fill = sector_type)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_viridis_d(option = "G") +
+  theme_bw() + 
+  labs(title = "Breakdown of Workplace Sectors \n by Proportion of State Population", x = "State", y = "Percentage of Population", fill = "Sector")
+
+
 ```
