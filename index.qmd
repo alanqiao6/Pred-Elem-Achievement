@@ -58,26 +58,28 @@ expenditures_PK12ed <- expenditures |>
 us_states_expenditures <- us_states |>
   select(-subregion) |>
   inner_join(expenditures_PK12ed, join_by(region == region), relationship = "many-to-many") |> 
-  filter(region != "district of columbia")
+  filter(region != "district of columbia") |> 
+  filter(year == 2016)
 ```
 
 ```{r}
 #| label: us-map-expenditures 
+#| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Expenditures Based on State' and is mapping 2016 state expenditures on education per child, adjusted for inflation, into each state. From this visualization, we see that states in the Northeast, namely New York, New Jersey, and Vermont, appear to provide the most funding to their students (at around $13,000). We can also see that states in the South and West, specifically New Mexico, Idaho, and Utah, have the lowest expenditure per child (at around $2,500). Most of the Midwest appears to have average per child expenditures, but Wyoming stands out as having significantly greater amounts allotted towards this."
 
 ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
   geom_polygon() +
-  theme_void() + 
-  scale_fill_gradient(low = "gray90", high = "darkblue") +
+  theme_void() +
   theme(legend.position = c(.2, .1),
         legend.direction = "horizontal") + 
+  scale_fill_gradient(low = "gray90", high = "darkblue") +
   coord_quickmap() + 
   labs(title = "Expenditures Based on State", 
-       fill = "Expenditure \nper Child \n(in thousands)", 
-       alt = "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Expenditures Based on State' and is mapping state expenditures on education per child, adjusted for inflation, to each state. From this visualization, we see that states in the Northeast, namely New York and New Jersey, appear to provide the most funding to their students (at around $13,000). We can also see that states in the South and West, specifically Mississippi and Las Vegas, have the lowest expenditure per child (at around $2,500). Most of the Midwest appears to have average per child expenditures, but Wyoming stands out as having significantly greater amounts allotted towards this.")
+       fill = "Expenditure \nper Child \n(in thousands)")
 ```
 
 ```{r}
 #| label: us-map-scores
+#| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
 
 scores_new <- scores |> 
   mutate(region = str_to_lower(Jurisdiction), MN = as.numeric(MN))
@@ -91,11 +93,11 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   theme_void() + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
-        legend.direction = "horizontal") + 
+        legend.direction = "horizontal", 
+        ) +
   coord_quickmap() + 
   labs(title = "Achievement Rates Based on State", 
-       fill = "Average 4th Grade \nReading Score",
-       alt = "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states.")
+       fill = "Average 4th Grade \nReading Score")
 ```
 
 # Merging Data
