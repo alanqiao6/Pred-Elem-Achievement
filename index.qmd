@@ -966,14 +966,14 @@ To achieve objectives, we integrated data from four datasets. The first
 dataset was `scores`, which had `r ncol(scores)` variables and
 `r nrow(scores)` observations. The variables of interest were
 `state_name`, and `reading_level`, the average 4th-grade reading level
-in the given state in 2022. The second was `childcare_costs`, which had
-`r ncol(childcare_costs)` variables and `r nrow(childcare_costs)`
-observations. `Childcare_costs` offered all of our data on county-level
-socioeconomic factors, and we mutated various variables to be potential
-predictors in our linear regression model for goal #3. The `counties`
-dataset had `r ncol(counties)` variables and `r nrow(counties)`
-observations and was used to merge the country-based data in
-`childcare_costs` with the state-based data in `scores`. The
+in the given state in 2022 (state-wide achievement level). The second
+was `childcare_costs`, which had `r ncol(childcare_costs)` variables and
+`r nrow(childcare_costs)` observations. `Childcare_costs` offered all of
+our data on county-level socioeconomic factors, and we mutated various
+variables to be potential predictors in our linear regression model for
+goal #3. The `counties` dataset had `r ncol(counties)` variables and
+`r nrow(counties)` observations and was used to merge the country-based
+data in `childcare_costs` with the state-based data in `scores`. The
 `expenditures` dataset had `r ncol(expenditures)` variables and
 `r nrow(expenditures)` observations. From this dataset, we were
 interested in examining `inf_adj_perchild`, or total government spending
@@ -1017,7 +1017,13 @@ time, each state is shaded based on its `inf_adj_perchild`. A
 side-by-side comparison of visualization #1 and #2 allows for
 preliminary conclusions on the impact of public investments into youth
 education and enables us to start identifying states that may have
-particularly cost-effective educational systems. INSERT MAIN FINDING. 
+particularly cost-effective educational systems. New York, New Jersey,
+and Wyoming come forward as the states with the highest government
+spending on students. This has broad ties to visualization #1 where New
+Jersey and Wyoming were both in the top 5 of states in terms of
+`reading_level.` Notably, New York was ranked as state #37 in terms of
+`reading_level`, raising questions worth exploring in future research
+about how New York is investing in public education.
 
 Our `final_model` addresses goal #3. A foundational literature review
 implicates several social, psychological, and economic in the
@@ -1049,13 +1055,17 @@ given county. We first engineered a maximum additive regression model
 with all the possible predictors, and then, we manually performed
 forward selection to determine what combination of the predictors
 yielded a model with the lowest adjusted R2. The models were sorted
-based on adjusted-R2. We created a dataset with which XXX. We find that
-XXX. 
+based on adjusted-R2. We created a data frame with all of the models and
+their corresponding adjusted R2 values. We then filtered for the model
+with the maximum R2. We find that `regression_model_61` has the best fit
+and it includes the predictors `family_poverty` ,
+`ratio_of_one_to_both`, `average_center_child_care`,
+`average_family_child_care`, and `one_parent_households`.
 
 Visualization #4 is rooted in goal #4. We have always been committed to
 creating a visualization that zooms in on states with the highest values
 in `reading_level`. In our literature review to determine potential
-community-level predictors for reading_level, we found that both
+community-level predictors for `reading_level`, we found that both
 socioeconomic status and parental attitudes contribute to
 `reading_level`, both of which may be reflect in parents' occupations.
 Thus, we opted to explore the average distribution of occupational
@@ -1095,12 +1105,27 @@ Overall, our conclusions illuminate opportunities for political and
 programmatic interventions. Visualization #1 identifies the states with
 the highest scores in 4th-grade reading to be Massachusetts, Florida,
 and Wyoming. We subsequently determine that White students are
-overrepresented in these best-practice states. There is then an urgent
-need to ensure that school's do not exclusively appeal to the
-intellectual and social tendencies associated with Whiteness. Future
-research should be conducted to test the efficacy and feasibility of
-nascent frameworks for multicultural education. Visualization #2 finds
-that XXX. Visualization #3 finds XXX. Visualization #4
+overrepresented in these best-practice states. There is then a need to
+ensure that school's do not exclusively appeal to the intellectual and
+social tendencies associated with Whiteness. Future research should be
+conducted to test the efficacy and feasibility of nascent frameworks for
+multicultural education. Visualization #2 finds that New Jersey, New
+York, and Wyoming have the highest expenditures on students. More
+specific work needs to be done on the associations between
+`inf_adj_perchild` and `reading_level`. Visualization #3 finds that
+`family_poverty` , `ratio_of_one_to_both`, `average_center_child_care`,
+`average_family_child_care`, and `one_parent_households` all play a
+significant role in children's educational experiences. Immediately,
+this analysis supports the continued development of public policies that
+encourage maternity and/or paternity leave as well as fund subsidized
+childcare programs. Furthermore, we affirm an already robust
+understanding of the poverty cycle; low educational achievement
+associated with high poverty levels will make it tough for children from
+low-income neighborhoods to reach economic prosperity. Visualization #4
+suggests that states with high `reading_level` also have a high
+percentage of adults who work in "Management and Science," fostering
+ideas about novel programs that create government-sponsored vocational
+training for adults from all communities to enter competitive fields.
 
 Our analyses were restricted in a number of ways. First, since we only
 had the average 4th-grade `reading_level` per state, we were not able to
