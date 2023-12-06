@@ -124,7 +124,93 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
 ## Visualization #3: State Achievement Comparisons
 
 ```{r}
-# Anushka code 
+#| label: merging-data 
+#| echo: false
+
+#Merging childcare_costs and counties 
+merged_counties_data <- left_join(childcare_costs, counties, join_by("county_fips_code"))
+
+#Preparing scores to merge
+renamed_scores <- scores |> 
+  rename("state_name" = "Jurisdiction")
+
+#Merging all data
+merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_name"))
+```
+
+```{r}
+#| label: preparing-data-for-vis-4
+#| echo: false
+
+#Preparing data
+best_states_data <- merged_data |> 
+  arrange(desc(MN)) |>
+  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  filter(achievement_level == "High") |> 
+  filter(!is.na(state_name))
+
+best_states_data <- best_states_data |>
+  relocate(state_name) |> 
+  pivot_longer(
+    cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
+    names_to = "sector_type", 
+    values_to = "sector_percentage"
+  ) |>
+  mutate(sector_type = case_when(
+    sector_type == "emp_m" ~ "Management and Science", 
+    sector_type == "emp_n" ~ "Natural Resources", 
+    sector_type == "emp_p" ~ "Production", 
+    sector_type == "emp_service" ~ "Public Service",
+    sector_type == "emp_sales" ~ "Sales and Office"
+    ), 
+    state_name = case_when(
+      state_name == "Massachusetts" ~ "MA", 
+      state_name == "New Hampshire" ~ "NH",
+      state_name == "New Jersey" ~ "NJ",
+      state_name == "Wyoming" ~ "WY"
+    )
+  )
+
+#Grouping and summarizing data 
+summarized_data <- best_states_data |>
+  group_by(state_name, sector_type) |>
+  summarize(mean_percentage = mean(sector_percentage))
+
+
+#Trying somethign new
+summarized_data_1 <- best_states_data |>
+  group_by(county_fips_code, study_year) |>
+  summarize(sum_percentage = sum(sector_percentage))
+
+summarized_data_2 <- best_states_data |>
+  group_by(state_name, sector_type, study_year) |>
+  summarize(mean_percentage = mean(sector_percentage))
+  
+#Merging data 
+merged_intermediary_data <- left_join(best_states_data, summarized_data_1, join_by(county_fips_code, study_year))
+
+merged_final_data <- left_join(merged_intermediary_data, summarized_data_2, join_by(state_name, sector_type, study_year))
+```
+
+```{r}
+#| label: visualizing-states
+#| fig-asp: 0.6
+#| echo: false
+
+merged_final_data <- merged_final_data |> 
+  mutate(
+    sector_type = fct_reorder(sector_type, mean_percentage, .desc = TRUE)
+  ) |> 
+  filter(!is.na(state_name))
+
+merged_final_data |> 
+  ggplot(aes(x = study_year, y = mean_percentage, fill = sector_type)) + 
+  geom_density(stat = "identity", alpha = 0.5) +
+  facet_wrap(~ state_name) +
+  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
+  labs(x = "Year", y = "Population Percentage Employed", title = "Percentage of Population Employed in Sector by State", fill = "Sector") +
+  theme_bw() +
+  scale_fill_viridis_d(option = "B")
 ```
 
 ## Linear Model Literature Review: Choosing Predictors for Forward Selection
