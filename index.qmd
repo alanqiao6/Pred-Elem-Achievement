@@ -67,7 +67,7 @@ us_states_expenditures <- us_states |>
 #| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Expenditures Based on State' and is mapping 2016 state expenditures on education per child, adjusted for inflation, into each state. From this visualization, we see that states in the Northeast, namely New York, New Jersey, and Vermont, appear to provide the most funding to their students (at around $13,000). We can also see that states in the South and West, specifically New Mexico, Idaho, and Utah, have the lowest expenditure per child (at around $2,500). Most of the Midwest appears to have average per child expenditures, but Wyoming stands out as having significantly greater amounts allotted towards this."
 
 ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
-  geom_polygon() +
+  geom_polygon(color = "white") +
   theme_void() +
   theme(legend.position = c(.2, .1),
         legend.direction = "horizontal") + 
@@ -89,7 +89,7 @@ us_states_scores <- us_states |>
   inner_join(scores_new, join_by(region == region), relationship = "many-to-many")
 
 ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
-  geom_polygon() + 
+  geom_polygon(color = "white") + 
   theme_void() + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
@@ -888,10 +888,11 @@ tidy(regression_model_61)
 #| label: preparing-data-for-vis-4
 
 #Preparing data
-best_states_data <- merged_data_2018 |> 
+best_states_data <- merged_data |> 
   arrange(desc(MN)) |>
   mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
-  filter(achievement_level == "High")
+  filter(achievement_level == "High") |> 
+  filter(!is.na(state_name))
 
 best_states_data <- best_states_data |>
   relocate(state_name) |> 
@@ -941,18 +942,25 @@ merged_final_data <- left_join(merged_intermediary_data, summarized_data_2, join
 #| fig-asp: 0.6
 
 #Creating visualization
-ggplot(summarized_data, aes(x = state_name, y = mean_percentage, fill = sector_type)) + 
-  geom_bar(stat = "identity") + 
-  scale_fill_viridis_d(option = "G") +
-  theme_bw() + 
-  labs(title = "Breakdown of Workplace Sectors \n by Proportion of State Population", x = "State", y = "Percentage of Population", fill = "Sector")
+#ggplot(summarized_data, aes(x = state_name, y = mean_percentage, fill = sector_type)) + 
+  #geom_bar(stat = "identity") + 
+  #scale_fill_viridis_d(option = "G") +
+  #theme_bw() + 
+  #labs(title = "Breakdown of Workplace Sectors \n by Proportion of State Population", x = "State", y = "Percentage of Population", fill = "Sector")
 
 #Trying something new 
-merged_final_data |> 
-  filter(state_name == "Massachusetts") |>
-  ggplot(aes(x = study_year, y = sum_percentage, fill = mean_percentage, color = sector_type)) + 
-  geom_density(stat = "identity") 
 
+levels <- c("Natural Resources", "Production", "Public Service", "Sales and Office", "Management and Science")
+
+merged_final_data <- merged_final_data |> 
+  mutate(
+    sector_type = fct_reorder(as.factor(sector_type), levels)
+  )
+
+merged_final_data |> 
+  ggplot(aes(x = study_year, y = mean_percentage, fill = sector_type)) + 
+  geom_density(stat = "identity", alpha = 0.5) +
+  facet_wrap(~ state_name)
 ```
 
 # Write-Up

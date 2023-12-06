@@ -63,34 +63,7 @@ us_states <- map_data("state")
 
 -   HI
 
--   
-
--   `##` sets the start of a new slide
-
-## Layouts
-
-You can use plain text
-
--   or bullet points
-
-::: columns
-::: {.column width="50%"}
-TERESTING STRUCTURE
-:::
-
-::: {.column width="50%"}
--   iNTlike
--   this
-:::
-:::
-
-### 
-
-::: aside
-\[\*\] And add footnotes
-
-## 
-:::
+## Choropleth Map: 2016 Expenditures
 
 ```{r}
 #| label: us-map-dataset
@@ -107,14 +80,12 @@ us_states_expenditures <- us_states |>
   filter(year == 2016)
 ```
 
-## Choropleth Map: 2016 Expenditures
-
 ```{r}
 #| label: us-map-expenditures 
 #| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Expenditures Based on State' and is mapping 2016 state expenditures on education per child, adjusted for inflation, into each state. From this visualization, we see that states in the Northeast, namely New York, New Jersey, and Vermont, appear to provide the most funding to their students (at around $13,000). We can also see that states in the South and West, specifically New Mexico, Idaho, and Utah, have the lowest expenditure per child (at around $2,500). Most of the Midwest appears to have average per child expenditures, but Wyoming stands out as having significantly greater amounts allotted towards this."
 
 ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
-  geom_polygon() +
+  geom_polygon(color = "white") +
   theme_void() +
   theme(legend.position = c(.2, .1),
         legend.direction = "horizontal") + 
@@ -138,7 +109,7 @@ us_states_scores <- us_states |>
   inner_join(scores_new, join_by(region == region), relationship = "many-to-many")
 
 ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
-  geom_polygon() + 
+  geom_polygon(color = "white") + 
   theme_void() + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(legend.position = c(.2, .1),
@@ -146,6 +117,8 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   coord_quickmap() + 
   labs(title = "Achievement Rates Based on State", 
        fill = "Average 4th Grade \nReading Score")
+
+#theme() make legend text size smaller 
 ```
 
 ## Visualization #3: State Achievement Comparisons
@@ -877,10 +850,9 @@ final_model <- final |>
 ```{r}
 #| label: model-tidy-output
 
-tidy(regression_model_61)
+tidy(regression_model_61) |> 
+  knitr::kable(digits = 3)
 ```
-
-$$\bar{score}=-0.0707{(familypoverty)} - 0.280{(ratioofonetotboth) \\- 0.0164{(averagecenterchildcare)} \\+ 0.0360{(averagefamilychildcare)} \\- 0.00000635{(oneparenthouseholds)}} \\+ 215$$
 
 ## Take-Aways
 
@@ -890,6 +862,10 @@ $$\bar{score}=-0.0707{(familypoverty)} - 0.280{(ratioofonetotboth) \\- 0.0164{(a
 
 ::: columns
 ::: {.column width="50%"}
+::: aside
+\[\*\] And add footnotes
+:::
+
 -   Some text
 -   goes here
 :::

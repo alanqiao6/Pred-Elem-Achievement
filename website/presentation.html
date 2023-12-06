@@ -344,8 +344,34 @@ JanIce
 <li><p>HI</p></li>
 <li><p>HI</p></li>
 <li><p>HI</p></li>
+<li></li>
+<li><p><code>##</code> sets the start of a new slide</p></li>
 </ul>
 </section>
+<section id="layouts" class="slide level2">
+<h2>Layouts</h2>
+<p>You can use plain text</p>
+<ul>
+<li>or bullet points</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>TERESTING STRUCTURE</p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>iNTlike</li>
+<li>this</li>
+</ul>
+</div>
+</div>
+<h3 id="section"></h3>
+
+<aside><div>
+<p>[*] And add footnotes</p>
+<section id="section-1" class="slide level2">
+<h2></h2>
+</section>
+</div></aside></section>
 <section id="choropleth-map-2016-expenditures" class="slide level2">
 <h2>Choropleth Map: 2016 Expenditures</h2>
 
@@ -369,64 +395,19 @@ JanIce
 <section id="final-regression-model-61" class="slide level2">
 <h2>Final Regression Model (#61)</h2>
 <div class="cell">
-<div class="cell-output-display">
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">214.597</td>
-<td style="text-align: right;">0.378</td>
-<td style="text-align: right;">567.520</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">family_poverty</td>
-<td style="text-align: right;">-0.071</td>
-<td style="text-align: right;">0.014</td>
-<td style="text-align: right;">-5.036</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">ratio_of_one_to_both</td>
-<td style="text-align: right;">-0.280</td>
-<td style="text-align: right;">0.064</td>
-<td style="text-align: right;">-4.399</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">average_center_child_care</td>
-<td style="text-align: right;">-0.016</td>
-<td style="text-align: right;">0.004</td>
-<td style="text-align: right;">-4.423</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">average_family_child_care</td>
-<td style="text-align: right;">0.036</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">6.987</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">one_parent_households</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">-1.185</td>
-<td style="text-align: right;">0.236</td>
-</tr>
-</tbody>
-</table>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  term                          estimate  std.error statistic  p.value
+  &lt;chr&gt;                            &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)               215.         0.378         568.   0       
+2 family_poverty             -0.0707     0.0140         -5.04 5.12e- 7
+3 ratio_of_one_to_both       -0.280      0.0636         -4.40 1.14e- 5
+4 average_center_child_care  -0.0164     0.00371        -4.42 1.02e- 5
+5 average_family_child_care   0.0360     0.00516         6.99 3.64e-12
+6 one_parent_households      -0.00000635 0.00000536     -1.18 2.36e- 1</code></pre>
 </div>
 </div>
+<p><span class="math display">\[\bar{score}=-0.0707{(familypoverty)} - 0.280{(ratioofonetotboth) \\- 0.0164{(averagecenterchildcare)} \\+ 0.0360{(averagefamilychildcare)} \\- 0.00000635{(oneparenthouseholds)}} \\+ 215\]</span></p>
 </section>
 <section id="take-aways" class="slide level2">
 <h2>Take-Aways</h2>
@@ -438,7 +419,6 @@ JanIce
 <h2>Extra Templates</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-
 <ul>
 <li>Some text</li>
 <li>goes here</li>
@@ -455,9 +435,7 @@ JanIce
 </div>
 </div>
 </div>
-<aside><div>
-<p>[*] And add footnotes</p>
-</div></aside></section>
+</section>
 <section>
 <section id="a-new-section" class="title-slide slide level1 center">
 <h1>A new section…</h1>
