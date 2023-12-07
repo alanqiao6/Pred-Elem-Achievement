@@ -1314,3 +1314,30 @@ changes in `reading_level` and corresponding predictors over time.
 Research effort should also be made to replicate these analyses but with
 a more holistic outcome measure, such as overall classroom functioning
 as reported by teachers.
+
+# Works Cited
+
+Works Cited
+
+"EARLY SKILLS AND PREDICTORS OF ACADEMIC SUCCESS." Connecticut
+Government, Hanover Research, Nov. 2016,
+portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:\~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.
+Accessed 6 Dec. 2023.
+
+"Education and Socioeconomic Status." American Psychological
+Association, 2017,
+[www.apa.org/pi/ses/resources/publications/education](http://www.apa.org/pi/ses/resources/publications/education). 
+Accessed 6 Dec. 2023.
+
+"High-quality child care contributes to later success in science, math."
+American Psychological Association, 15 June 2023,
+[www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:\~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association](http://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association).
+Accessed 6 Dec. 2023.
+
+Perry-Jenkins, Maureen. "How a Parent's Experience at Work Impacts Their
+Kids." Harvard Business Review, 31 Jan. 2023,
+hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:\~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents%27%20work%20lives.&text=It%27s%20no%20secret%20that%20our,our%20loves%20
+outside%20of%20 work.
+
+"Racial and Ethnic Achievement Gaps." Stanford Center for Education
+Policy Analysis. Accessed 6 Dec. 2023.
