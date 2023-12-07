@@ -57,7 +57,11 @@ expenditures_PK12ed <- expenditures |>
 
 us_states_expenditures <- us_states |>
   select(-subregion) |>
-  inner_join(expenditures_PK12ed, join_by(region == region), relationship = "many-to-many") |> 
+  inner_join(
+    expenditures_PK12ed, 
+    join_by(region == region), 
+    relationship = "many-to-many"
+    ) |> 
   filter(region != "district of columbia") |> 
   filter(year == 2016)
 ```
@@ -66,15 +70,27 @@ us_states_expenditures <- us_states |>
 #| label: us-map-expenditures 
 #| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Expenditures Based on State' and is mapping 2016 state expenditures on education per child, adjusted for inflation, into each state. From this visualization, we see that states in the Northeast, namely New York, New Jersey, and Vermont, appear to provide the most funding to their students (at around $13,000). We can also see that states in the South and West, specifically New Mexico, Idaho, and Utah, have the lowest expenditure per child (at around $2,500). Most of the Midwest appears to have average per child expenditures, but Wyoming stands out as having significantly greater amounts allotted towards this."
 
-ggplot(us_states_expenditures, aes(x = long, y = lat, group = group, fill = inf_adj_perchild)) +
+ggplot(
+  us_states_expenditures, 
+  aes(
+    x = long, 
+    y = lat, 
+    group = group, 
+    fill = inf_adj_perchild
+    )
+  ) +
   geom_polygon(color = "white") +
   theme_void() +
-  theme(legend.position = c(.2, .1),
-        legend.direction = "horizontal") + 
+  theme(
+    legend.position = c(.2, .1),
+    legend.direction = "horizontal"
+    ) + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   coord_quickmap() + 
-  labs(title = "Expenditures Based on State", 
-       fill = "Expenditure \nper Child \n(in thousands)")
+  labs(
+    title = "Expenditures Based on State", 
+    fill = "Expenditure \nper Child \n(in thousands)"
+    )
 ```
 
 ```{r}
@@ -86,18 +102,25 @@ scores_new <- scores |>
 
 us_states_scores <- us_states |>
   select(-subregion) |>
-  inner_join(scores_new, join_by(region == region), relationship = "many-to-many")
+  inner_join(
+    scores_new, 
+    join_by(region == region), 
+    relationship = "many-to-many"
+    )
 
 ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   geom_polygon(color = "white") + 
   theme_void() + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
-  theme(legend.position = c(.2, .1),
-        legend.direction = "horizontal", 
+  theme(
+    legend.position = c(.2, .1),
+    legend.direction = "horizontal", 
         ) +
   coord_quickmap() + 
-  labs(title = "Achievement Rates Based on State", 
-       fill = "Average 4th Grade \nReading Score")
+  labs(
+    title = "Achievement Rates Based on State", 
+    fill = "Average 4th Grade \nReading Score"
+    )
 ```
 
 # Merging Data
@@ -106,14 +129,21 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
 #| label: merging-data 
 
 #Merging childcare_costs and counties 
-merged_counties_data <- left_join(childcare_costs, counties, join_by("county_fips_code"))
+merged_counties_data <- left_join(
+  childcare_costs, counties, 
+  join_by("county_fips_code")
+  )
 
 #Preparing scores to merge
 renamed_scores <- scores |> 
   rename("state_name" = "Jurisdiction")
 
 #Merging all data
-merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_name"))
+merged_data <- left_join(
+  merged_counties_data, 
+  renamed_scores, 
+  join_by("state_name")
+  )
 
 ```
 
@@ -239,10 +269,7 @@ merged_data <- merged_data |>
 
 #Percentage of single-mother households 
 merged_data <- merged_data |> 
-  mutate(
-    percentage_single_mother =
-      h_under6_single_m / households
-  )
+  mutate(percentage_single_mother = h_under6_single_m / households)
   
 #Ratio of one-parent-working to two-parent-working households 
 merged_data <- merged_data |> 
@@ -255,14 +282,14 @@ merged_data <- merged_data |>
 merged_data <- merged_data |> 
   mutate(
     average_center_child_care = 
-    (mc_infant + mc_toddler + mc_preschool)/3
+    (mc_infant + mc_toddler + mc_preschool) / 3
   )
 
 #Cost of family-based child care 
 merged_data <- merged_data |> 
   mutate(
     average_family_child_care = 
-    (mfcc_infant + mfcc_toddler + mfcc_preschool)/3
+    (mfcc_infant + mfcc_toddler + mfcc_preschool) / 3
   )
 ```
 
@@ -277,16 +304,17 @@ merged_data_2018 <- merged_data |>
 
 #Creating regression model with all possible variables 
 merged_data_2018 <- merged_data_2018 |> 
-  filter(!is.na(MN),
-         !is.na(family_poverty),
-         !is.na(percentage_single_mother),
-         !is.na(ratio_of_one_to_both),
-         !is.na(average_center_child_care),
-         !is.na(average_family_child_care),
-         !is.na(one_parent_households),
-         ratio_of_one_to_both != 'Inf') |>
-  mutate(
-   MN = as.numeric(MN)) 
+  filter(
+    !is.na(MN),
+    !is.na(family_poverty),
+    !is.na(percentage_single_mother),
+    !is.na(ratio_of_one_to_both),
+    !is.na(average_center_child_care),
+    !is.na(average_family_child_care),
+    !is.na(one_parent_households),
+    ratio_of_one_to_both != 'Inf') |>
+  mutate(MN = as.numeric(MN)
+         ) 
 
 maximum_regression_model <- linear_reg() |>
   fit(
@@ -297,7 +325,8 @@ maximum_regression_model <- linear_reg() |>
       average_family_child_care + 
       one_parent_households + 
       ratio_of_one_to_both, 
-    data = merged_data_2018)
+    data = merged_data_2018
+    )
 
 regression_model_1 <- linear_reg() |> 
   fit(MN ~ family_poverty, data = merged_data_2018)
@@ -306,247 +335,306 @@ regression_model_1 <- linear_reg() |>
 ```{r}
 #| label: creating-all-regression-models
 
-regression_model_1 <- lm(MN ~ family_poverty, data = merged_data_2018)
+regression_model_1 <- lm(
+  MN ~ 
+    family_poverty, 
+  data = merged_data_2018
+  )
 
-regression_model_2 <- lm(MN ~ percentage_single_mother, data = merged_data_2018)
+regression_model_2 <- lm(
+  MN ~ 
+    percentage_single_mother, 
+  data = merged_data_2018
+  )
 
-regression_model_3 <- lm(MN ~ average_center_child_care, data = merged_data_2018)
+regression_model_3 <- lm(
+  MN ~ 
+    average_center_child_care, 
+  data = merged_data_2018
+  )
 
-regression_model_4 <- lm(MN ~ average_family_child_care, data = merged_data_2018)
+regression_model_4 <- lm(
+  MN ~ 
+    average_family_child_care, 
+  data = merged_data_2018
+  )
 
-regression_model_5 <- lm(MN ~ one_parent_households, data = merged_data_2018)
+regression_model_5 <- lm(
+  MN ~ 
+    one_parent_households, 
+  data = merged_data_2018
+  )
 
-regression_model_6 <- lm(MN ~ ratio_of_one_to_both, data = merged_data_2018)
+regression_model_6 <- lm(
+  MN ~ 
+    ratio_of_one_to_both, 
+  data = merged_data_2018
+  )
 
 regression_model_7 <- lm(
   MN ~ 
     family_poverty + 
     percentage_single_mother, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_8 <- lm(
   MN ~ 
     family_poverty + 
     average_center_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_9 <- lm(
   MN ~ 
     family_poverty + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_10 <- lm(
   MN ~ 
     family_poverty + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_11 <- lm(
   MN ~ 
     family_poverty + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_12 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_center_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_13 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_14 <- lm(
   MN ~ 
     percentage_single_mother + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_15 <- lm(
   MN ~ 
     percentage_single_mother + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_16 <- lm(
   MN ~ 
     average_center_child_care + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_17 <- lm(
   MN ~ 
     average_center_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_18 <- lm(
   MN ~ 
     average_center_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_19 <- lm(
   MN ~ 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_20 <- lm(
   MN ~ 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_21 <- lm(
   MN ~ 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_22 <- lm(
   MN ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_23 <- lm(
   MN ~ 
     family_poverty + 
     percentage_single_mother + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_24 <- lm(
   MN ~ 
     family_poverty + 
     percentage_single_mother + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_25 <- lm(
   MN ~ 
     family_poverty + 
     percentage_single_mother + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_26 <- lm(
   MN ~ 
     family_poverty + 
     average_center_child_care + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_27 <- lm(
   MN ~ 
     family_poverty + 
     average_center_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_28 <- lm(
   MN ~ 
     family_poverty + 
     average_center_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_29 <- lm(
   MN ~ 
     family_poverty +
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_30 <- lm(
   MN ~ 
     family_poverty + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_31 <- lm(
   MN ~ 
     family_poverty + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_32 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_center_child_care + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_33 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_center_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_34 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_center_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_35 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_36 <- lm(
   MN ~ 
     percentage_single_mother + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_37 <- lm(
   MN ~ 
     percentage_single_mother + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_38 <- lm(
   MN ~ 
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_39 <- lm(
   MN ~ 
     average_center_child_care + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_40 <- lm(
   MN ~ 
     average_center_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_41 <- lm(
   MN ~ 
     average_family_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_42 <- lm(
   MN ~ 
@@ -554,7 +642,8 @@ regression_model_42 <- lm(
     percentage_single_mother + 
     average_center_child_care + 
     average_family_child_care, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_43 <- lm(
   MN ~ 
@@ -562,7 +651,8 @@ regression_model_43 <- lm(
     percentage_single_mother + 
     average_center_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_44 <- lm(
   MN ~ 
@@ -570,7 +660,8 @@ regression_model_44 <- lm(
     percentage_single_mother + 
     average_center_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_45 <- lm(
   MN ~ 
@@ -578,7 +669,8 @@ regression_model_45 <- lm(
     percentage_single_mother + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_46 <- lm(
   MN ~ 
@@ -586,7 +678,8 @@ regression_model_46 <- lm(
     percentage_single_mother + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_47 <- lm(
   MN ~ 
@@ -594,7 +687,8 @@ regression_model_47 <- lm(
     percentage_single_mother + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_48 <- lm(
   MN ~ 
@@ -602,7 +696,8 @@ regression_model_48 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_49 <- lm(
   MN ~ 
@@ -610,7 +705,8 @@ regression_model_49 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_50 <- lm(
   MN ~ 
@@ -618,7 +714,8 @@ regression_model_50 <- lm(
     average_center_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_51 <- lm(
   MN ~ 
@@ -626,7 +723,8 @@ regression_model_51 <- lm(
     average_family_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_52 <- lm(
   MN ~ 
@@ -634,7 +732,8 @@ regression_model_52 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_53 <- lm(
   MN ~ 
@@ -642,7 +741,8 @@ regression_model_53 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_54 <- lm(
   MN ~ 
@@ -650,7 +750,8 @@ regression_model_54 <- lm(
     average_center_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_55 <- lm(
   MN ~ 
@@ -658,7 +759,8 @@ regression_model_55 <- lm(
     average_family_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_56 <- lm(
   MN ~ 
@@ -666,7 +768,8 @@ regression_model_56 <- lm(
     average_family_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_57 <- lm(
   MN ~ 
@@ -675,7 +778,8 @@ regression_model_57 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_58 <- lm(
   MN ~ 
@@ -684,7 +788,8 @@ regression_model_58 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_59 <- lm(
   MN ~ 
@@ -693,7 +798,8 @@ regression_model_59 <- lm(
     average_center_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_60 <- lm(
   MN ~ 
@@ -702,7 +808,8 @@ regression_model_60 <- lm(
     average_family_child_care + 
     ratio_of_one_to_both + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_61 <- lm(
   MN ~ 
@@ -711,7 +818,8 @@ regression_model_61 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 regression_model_62 <- lm(
   MN ~ 
@@ -720,7 +828,8 @@ regression_model_62 <- lm(
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 maximum_regression_model <- lm(
   MN ~ 
@@ -730,140 +839,144 @@ maximum_regression_model <- lm(
     average_family_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
-  data = merged_data_2018)
+  data = merged_data_2018
+  )
 
 ```
 
 ```{r}
 #| label: creating-dataframe-analyzing-model
 
-r_squared <- c(summary(regression_model_1)$adj.r.squared, 
-          summary(regression_model_2)$adj.r.squared, 
-          summary(regression_model_3)$adj.r.squared, 
-          summary(regression_model_4)$adj.r.squared, 
-          summary(regression_model_5)$adj.r.squared, 
-          summary(regression_model_6)$adj.r.squared, 
-          summary(regression_model_7)$adj.r.squared, 
-          summary(regression_model_8)$adj.r.squared, 
-          summary(regression_model_9)$adj.r.squared, 
-          summary(regression_model_10)$adj.r.squared, 
-          summary(regression_model_11)$adj.r.squared, 
-          summary(regression_model_12)$adj.r.squared, 
-          summary(regression_model_13)$adj.r.squared, 
-          summary(regression_model_14)$adj.r.squared, 
-          summary(regression_model_15)$adj.r.squared, 
-          summary(regression_model_16)$adj.r.squared, 
-          summary(regression_model_17)$adj.r.squared, 
-          summary(regression_model_18)$adj.r.squared, 
-          summary(regression_model_19)$adj.r.squared, 
-          summary(regression_model_20)$adj.r.squared, 
-          summary(regression_model_21)$adj.r.squared, 
-          summary(regression_model_22)$adj.r.squared, 
-          summary(regression_model_23)$adj.r.squared, 
-          summary(regression_model_24)$adj.r.squared, 
-          summary(regression_model_25)$adj.r.squared, 
-          summary(regression_model_26)$adj.r.squared, 
-          summary(regression_model_27)$adj.r.squared, 
-          summary(regression_model_28)$adj.r.squared, 
-          summary(regression_model_29)$adj.r.squared, 
-          summary(regression_model_30)$adj.r.squared, 
-          summary(regression_model_31)$adj.r.squared, 
-          summary(regression_model_32)$adj.r.squared,
-          summary(regression_model_33)$adj.r.squared, 
-          summary(regression_model_34)$adj.r.squared, 
-          summary(regression_model_35)$adj.r.squared, 
-          summary(regression_model_36)$adj.r.squared, 
-          summary(regression_model_37)$adj.r.squared, 
-          summary(regression_model_38)$adj.r.squared, 
-          summary(regression_model_39)$adj.r.squared, 
-          summary(regression_model_40)$adj.r.squared, 
-          summary(regression_model_41)$adj.r.squared, 
-          summary(regression_model_42)$adj.r.squared, 
-          summary(regression_model_43)$adj.r.squared, 
-          summary(regression_model_44)$adj.r.squared, 
-          summary(regression_model_45)$adj.r.squared, 
-          summary(regression_model_46)$adj.r.squared, 
-          summary(regression_model_47)$adj.r.squared, 
-          summary(regression_model_48)$adj.r.squared,
-          summary(regression_model_49)$adj.r.squared, 
-          summary(regression_model_50)$adj.r.squared, 
-          summary(regression_model_51)$adj.r.squared, 
-          summary(regression_model_52)$adj.r.squared, 
-          summary(regression_model_53)$adj.r.squared, 
-          summary(regression_model_54)$adj.r.squared, 
-          summary(regression_model_55)$adj.r.squared, 
-          summary(regression_model_56)$adj.r.squared, 
-          summary(regression_model_57)$adj.r.squared, 
-          summary(regression_model_58)$adj.r.squared, 
-          summary(regression_model_59)$adj.r.squared, 
-          summary(regression_model_60)$adj.r.squared, 
-          summary(regression_model_61)$adj.r.squared, 
-          summary(regression_model_62)$adj.r.squared, 
-          summary(maximum_regression_model)$adj.r.squared)
+r_squared <- c(
+  summary(regression_model_1)$adj.r.squared, 
+  summary(regression_model_2)$adj.r.squared, 
+  summary(regression_model_3)$adj.r.squared, 
+  summary(regression_model_4)$adj.r.squared, 
+  summary(regression_model_5)$adj.r.squared, 
+  summary(regression_model_6)$adj.r.squared, 
+  summary(regression_model_7)$adj.r.squared, 
+  summary(regression_model_8)$adj.r.squared, 
+  summary(regression_model_9)$adj.r.squared, 
+  summary(regression_model_10)$adj.r.squared, 
+  summary(regression_model_11)$adj.r.squared, 
+  summary(regression_model_12)$adj.r.squared, 
+  summary(regression_model_13)$adj.r.squared, 
+  summary(regression_model_14)$adj.r.squared, 
+  summary(regression_model_15)$adj.r.squared, 
+  summary(regression_model_16)$adj.r.squared, 
+  summary(regression_model_17)$adj.r.squared, 
+  summary(regression_model_18)$adj.r.squared, 
+  summary(regression_model_19)$adj.r.squared, 
+  summary(regression_model_20)$adj.r.squared, 
+  summary(regression_model_21)$adj.r.squared, 
+  summary(regression_model_22)$adj.r.squared, 
+  summary(regression_model_23)$adj.r.squared, 
+  summary(regression_model_24)$adj.r.squared, 
+  summary(regression_model_25)$adj.r.squared, 
+  summary(regression_model_26)$adj.r.squared, 
+  summary(regression_model_27)$adj.r.squared, 
+  summary(regression_model_28)$adj.r.squared, 
+  summary(regression_model_29)$adj.r.squared, 
+  summary(regression_model_30)$adj.r.squared, 
+  summary(regression_model_31)$adj.r.squared, 
+  summary(regression_model_32)$adj.r.squared,
+  summary(regression_model_33)$adj.r.squared, 
+  summary(regression_model_34)$adj.r.squared, 
+  summary(regression_model_35)$adj.r.squared, 
+  summary(regression_model_36)$adj.r.squared, 
+  summary(regression_model_37)$adj.r.squared, 
+  summary(regression_model_38)$adj.r.squared, 
+  summary(regression_model_39)$adj.r.squared, 
+  summary(regression_model_40)$adj.r.squared, 
+  summary(regression_model_41)$adj.r.squared, 
+  summary(regression_model_42)$adj.r.squared, 
+  summary(regression_model_43)$adj.r.squared, 
+  summary(regression_model_44)$adj.r.squared, 
+  summary(regression_model_45)$adj.r.squared, 
+  summary(regression_model_46)$adj.r.squared, 
+  summary(regression_model_47)$adj.r.squared, 
+  summary(regression_model_48)$adj.r.squared,
+  summary(regression_model_49)$adj.r.squared, 
+  summary(regression_model_50)$adj.r.squared, 
+  summary(regression_model_51)$adj.r.squared, 
+  summary(regression_model_52)$adj.r.squared, 
+  summary(regression_model_53)$adj.r.squared, 
+  summary(regression_model_54)$adj.r.squared, 
+  summary(regression_model_55)$adj.r.squared, 
+  summary(regression_model_56)$adj.r.squared, 
+  summary(regression_model_57)$adj.r.squared, 
+  summary(regression_model_58)$adj.r.squared, 
+  summary(regression_model_59)$adj.r.squared, 
+  summary(regression_model_60)$adj.r.squared, 
+  summary(regression_model_61)$adj.r.squared, 
+  summary(regression_model_62)$adj.r.squared, 
+  summary(maximum_regression_model)$adj.r.squared
+  )
 
-model_name <- c("regression_model_1",
-                  "regression_model_2",
-                  "regression_model_3",
-                  "regression_model_4",
-                  "regression_model_5",
-                  "regression_model_6",
-                  "regression_model_7",
-                  "regression_model_8",
-                  "regression_model_9",
-                  "regression_model_10",
-                  "regression_model_11",
-                  "regression_model_12",
-                  "regression_model_13",
-                  "regression_model_14",
-                  "regression_model_15",
-                  "regression_model_16",
-                  "regression_model_17",
-                  "regression_model_18",
-                  "regression_model_19",
-                  "regression_model_20",
-                  "regression_model_21",
-                  "regression_model_22",
-                  "regression_model_23",
-                  "regression_model_24",
-                  "regression_model_25",
-                  "regression_model_26",
-                  "regression_model_27",
-                  "regression_model_28",
-                  "regression_model_29",
-                  "regression_model_30",
-                  "regression_model_31",
-                  "regression_model_32",
-                  "regression_model_33",
-                  "regression_model_34",
-                  "regression_model_35",
-                  "regression_model_36",
-                  "regression_model_37",
-                  "regression_model_38",
-                  "regression_model_39",
-                  "regression_model_40",
-                  "regression_model_41",
-                  "regression_model_42",
-                  "regression_model_43",
-                  "regression_model_44",
-                  "regression_model_45",
-                  "regression_model_46",
-                  "regression_model_47",
-                  "regression_model_48",
-                  "regression_model_49",
-                  "regression_model_50",
-                  "regression_model_51",
-                  "regression_model_52",
-                  "regression_model_53",
-                  "regression_model_54",
-                  "regression_model_55",
-                  "regression_model_56",
-                  "regression_model_57",
-                  "regression_model_58",
-                  "regression_model_59",
-                  "regression_model_60",
-                  "regression_model_61",
-                  "regression_model_62",
-                  "regression_model_63")
+model_name <- c(
+  "regression_model_1",
+  "regression_model_2",
+  "regression_model_3",
+  "regression_model_4",
+  "regression_model_5",
+  "regression_model_6",
+  "regression_model_7",
+  "regression_model_8",
+  "regression_model_9",
+  "regression_model_10",
+  "regression_model_11",
+  "regression_model_12",
+  "regression_model_13",
+  "regression_model_14",
+  "regression_model_15",
+  "regression_model_16",
+  "regression_model_17",
+  "regression_model_18",
+  "regression_model_19",
+  "regression_model_20",
+  "regression_model_21",
+  "regression_model_22",
+  "regression_model_23",
+  "regression_model_24",
+  "regression_model_25",
+  "regression_model_26",
+  "regression_model_27",
+  "regression_model_28",
+  "regression_model_29",
+  "regression_model_30",
+  "regression_model_31",
+  "regression_model_32",
+  "regression_model_33",
+  "regression_model_34",
+  "regression_model_35",
+  "regression_model_36",
+  "regression_model_37",
+  "regression_model_38",
+  "regression_model_39",
+  "regression_model_40",
+  "regression_model_41",
+  "regression_model_42",
+  "regression_model_43",
+  "regression_model_44",
+  "regression_model_45",
+  "regression_model_46",
+  "regression_model_47",
+  "regression_model_48",
+  "regression_model_49",
+  "regression_model_50",
+  "regression_model_51",
+  "regression_model_52",
+  "regression_model_53",
+  "regression_model_54",
+  "regression_model_55",
+  "regression_model_56",
+  "regression_model_57",
+  "regression_model_58",
+  "regression_model_59",
+  "regression_model_60",
+  "regression_model_61",
+  "regression_model_62",
+  "regression_model_63")
 
 final <- data.frame(model_name, r_squared)
 
@@ -887,13 +1000,20 @@ tidy(regression_model_61)
 # Visualization #3: Visualizing Job Distributions in Best-Practice States
 
 ```{r}
+<<<<<<< HEAD
+#| label: preparing-data-for-vis-4
+#| message: false
+#| warning: false
+#| error: false
+=======
 #| label: preparing-data-for-vis-3
+>>>>>>> 334a747ac9fdf5e939691a904001da71cacc0dcf
 
 #Preparing data
 best_states_data <- merged_data |> 
   arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
-  filter(achievement_level == "High") |> 
+  mutate(achievement_level = if_else(MN >= 223, "High", "Low")) |>
+  filter(achievement_level == "High") |>
   filter(!is.na(state_name))
 
 best_states_data <- best_states_data |>
@@ -903,7 +1023,8 @@ best_states_data <- best_states_data |>
     names_to = "sector_type", 
     values_to = "sector_percentage"
   ) |>
-  mutate(sector_type = case_when(
+  mutate(
+    sector_type = case_when(
     sector_type == "emp_m" ~ "Management and Science", 
     sector_type == "emp_n" ~ "Natural Resources", 
     sector_type == "emp_p" ~ "Production", 
@@ -918,6 +1039,15 @@ best_states_data <- best_states_data |>
     )
   )
 
+<<<<<<< HEAD
+#Grouping and summarizing data 
+summarized_data <- best_states_data |>
+  group_by(state_name, sector_type) |>
+  summarize(mean_percentage = mean(sector_percentage)) 
+
+
+=======
+>>>>>>> 334a747ac9fdf5e939691a904001da71cacc0dcf
 #Identifying mean percentage in each field in each state in each year
 
 summarized_data <- best_states_data |>
@@ -925,7 +1055,10 @@ summarized_data <- best_states_data |>
   summarize(mean_percentage = mean(sector_percentage))
   
 #Merging data 
-merged_final_data <- left_join(best_states_data, summarized_data, join_by(state_name, sector_type, study_year))
+merged_final_data <- left_join(
+  best_states_data, summarized_data, 
+  join_by(state_name, sector_type, study_year)
+  )
 ```
 
 ```{r}
@@ -935,16 +1068,27 @@ merged_final_data <- left_join(best_states_data, summarized_data, join_by(state_
 #Creating visualization 3
 merged_final_data <- merged_final_data |> 
   mutate(
-    sector_type = fct_reorder(sector_type, mean_percentage, .desc = TRUE, .fun = median)
-  ) |> 
+    sector_type = fct_reorder(
+      sector_type, 
+      mean_percentage, 
+      .desc = TRUE, 
+      .fun = median
+      )
+    ) |> 
   filter(!is.na(state_name))
 
+#Creating visualization
 merged_final_data |> 
   ggplot(aes(x = study_year, y = mean_percentage, fill = sector_type)) + 
   geom_density(stat = "identity", alpha = 0.5) +
   facet_wrap(~ state_name) +
   scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
-  labs(x = "Year", y = "Population Percentage Employed", title = "Percentage of Population Employed in Sector by State", fill = "Sector") +
+  labs(
+    x = "Year",
+    y = "Population Percentage Employed",
+    title = "Percentage of Population Employed in Sector by State",
+    fill = "Sector"
+    ) +
   theme_bw() +
   scale_fill_viridis_d(option = "B")
 ```
