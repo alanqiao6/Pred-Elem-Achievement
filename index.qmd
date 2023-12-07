@@ -884,6 +884,8 @@ the predictors of `family_poverty` , `ratio_of_one_to_both`,
 tidy(regression_model_61)
 ```
 
+# Visualization #3: Visualizing Job Distributions in Best-Practice and Worst-Practice States
+
 ```{r}
 #| label: preparing-data-for-vis-4
 
