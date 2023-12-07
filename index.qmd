@@ -85,7 +85,7 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_le
 ```
 
 ```{r}
-#| label: us-expenditures-dataset
+#| label: us-map-dataset
 
 expenditures_PK12ed <- expenditures |> 
   mutate(region = str_to_lower(state)) |>
@@ -1104,7 +1104,7 @@ we have learned in our FOCUS and, through critical thinking, novel
 understandings of data visualization, and empathy, highlight
 discrepancies in academic achievement. Specifically, we will narrow in
 on elementary school students across the United States, identifying
-environmental factors that contribute to inequities in their education.
+environmental factors that contribute to inequities in their education. 
 
 **Goals:**
 
