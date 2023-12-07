@@ -82,6 +82,8 @@ ggplot(
   geom_polygon(color = "white") +
   theme_void() +
   theme(
+    legend.text = element_text(size=7),
+    legend.title = element_text(size=10),
     legend.position = c(.2, .1),
     legend.direction = "horizontal"
     ) + 
@@ -97,7 +99,9 @@ ggplot(
 #| label: us-map-scores
 #| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
 
+
 scores_new <- scores |> 
+  filter(MN != is.na(MN)) |>
   mutate(region = str_to_lower(Jurisdiction), MN = as.numeric(MN))
 
 us_states_scores <- us_states |>
@@ -113,8 +117,10 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
   theme_void() + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
   theme(
+    legend.text = element_text(size=7),
+    legend.title = element_text(size=10),
     legend.position = c(.2, .1),
-    legend.direction = "horizontal", 
+    legend.direction = "horizontal"
         ) +
   coord_quickmap() + 
   labs(
@@ -152,7 +158,9 @@ merged_data <- left_join(
 **Literature Review:** What factors are most important in predicting
 elementary academic achievement levels?
 
-<https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.>
+[https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success](https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.){.uri}
+
+[#:\~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.](https://portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.){.uri}
 
 -   Behavioral skills, are influenced by parental monitoring and family
     stability
@@ -209,7 +217,9 @@ elementary academic achievement levels?
     -   Likely mediated by differences in the socioeconomic statuses of
         families
 
-<https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association.>
+[https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:\~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high](https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association.){.uri}
+
+[,by%20the%20American%20Psychological%20Association.](https://www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association.){.uri}
 
 -   High-quality childcare has been rigorously shown to lead to better
     performance in science, technology, engineering, and math through
@@ -1000,14 +1010,7 @@ tidy(regression_model_61)
 # Visualization #3: Visualizing Job Distributions in Best-Practice States
 
 ```{r}
-<<<<<<< HEAD
-#| label: preparing-data-for-vis-4
-#| message: false
-#| warning: false
-#| error: false
-=======
 #| label: preparing-data-for-vis-3
->>>>>>> 334a747ac9fdf5e939691a904001da71cacc0dcf
 
 #Preparing data
 best_states_data <- merged_data |> 
@@ -1039,15 +1042,11 @@ best_states_data <- best_states_data |>
     )
   )
 
-<<<<<<< HEAD
 #Grouping and summarizing data 
 summarized_data <- best_states_data |>
   group_by(state_name, sector_type) |>
   summarize(mean_percentage = mean(sector_percentage)) 
 
-
-=======
->>>>>>> 334a747ac9fdf5e939691a904001da71cacc0dcf
 #Identifying mean percentage in each field in each state in each year
 
 summarized_data <- best_states_data |>
