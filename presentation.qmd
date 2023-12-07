@@ -117,9 +117,12 @@ ggplot(
 #| label: us-map-scores
 #| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
 
+scores <- scores|> 
+  rename(reading_level = MN)
+
 scores_new <- scores |> 
-  filter(MN != is.na(MN)) |>
-  mutate(region = str_to_lower(Jurisdiction), MN = as.numeric(MN))
+  filter(reading_level != is.na(reading_level)) |>
+  mutate(region = str_to_lower(Jurisdiction), reading_level = as.numeric(reading_level))
 
 us_states_scores <- us_states |>
   select(-subregion) |>
@@ -129,7 +132,7 @@ us_states_scores <- us_states |>
     relationship = "many-to-many"
     )
 
-ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
+ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_level)) +
   geom_polygon(color = "white") + 
   theme_void() + 
   scale_fill_gradient(low = "gray90", high = "darkblue") +
@@ -186,8 +189,8 @@ merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_na
 
 #Preparing data
 best_states_data <- merged_data |> 
-  arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  arrange(desc(reading_level)) |>
+  mutate(achievement_level = if_else(reading_level>=223, "High", "Low")) |>
   filter(achievement_level == "High") |> 
   filter(!is.na(state_name))
 
@@ -284,7 +287,7 @@ merged_data_2018 <- merged_data |>
 #Creating regression model with all possible variables 
 merged_data_2018 <- merged_data_2018 |> 
   filter(
-    !is.na(MN),
+    !is.na(reading_level),
     !is.na(family_poverty),
     !is.na(percentage_single_mother),
     !is.na(ratio_of_one_to_both),
@@ -292,12 +295,12 @@ merged_data_2018 <- merged_data_2018 |>
     !is.na(average_family_child_care),
     !is.na(one_parent_households),
     ratio_of_one_to_both != 'Inf') |>
-  mutate(MN = as.numeric(MN)
+  mutate(reading_level = as.numeric(reading_level)
          ) 
 
 maximum_regression_model <- linear_reg() |>
   fit(
-    MN ~ 
+    reading_level ~ 
       family_poverty + 
       percentage_single_mother + 
       average_center_child_care + 
@@ -308,7 +311,7 @@ maximum_regression_model <- linear_reg() |>
     )
 
 regression_model_1 <- linear_reg() |> 
-  fit(MN ~ family_poverty, data = merged_data_2018)
+  fit(reading_level ~ family_poverty, data = merged_data_2018)
 ```
 
 ```{r}
@@ -317,8 +320,8 @@ regression_model_1 <- linear_reg() |>
 
 #Preparing data
 best_states_data <- merged_data_2018 |> 
-  arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  arrange(desc(reading_level)) |>
+  mutate(achievement_level = if_else(reading_level>=223, "High", "Low")) |>
   filter(achievement_level == "High")
 
 best_states_data <- best_states_data |>
@@ -353,148 +356,148 @@ summarized_data <- best_states_data |>
 #| label: creating-all-regression-models
 
 regression_model_1 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty, 
   data = merged_data_2018
   )
 
 regression_model_2 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother, 
   data = merged_data_2018
   )
 
 regression_model_3 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care, 
   data = merged_data_2018
   )
 
 regression_model_4 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_family_child_care, 
   data = merged_data_2018
   )
 
 regression_model_5 <- lm(
-  MN ~ 
+  reading_level ~ 
     one_parent_households, 
   data = merged_data_2018
   )
 
 regression_model_6 <- lm(
-  MN ~ 
+  reading_level ~ 
     ratio_of_one_to_both, 
   data = merged_data_2018
   )
 
 regression_model_7 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother, 
   data = merged_data_2018
   )
 
 regression_model_8 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care, 
   data = merged_data_2018
   )
 
 regression_model_9 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_family_child_care, 
   data = merged_data_2018
   )
 
 regression_model_10 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     one_parent_households, 
   data = merged_data_2018
   )
 
 regression_model_11 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     ratio_of_one_to_both, 
   data = merged_data_2018
   )
 
 regression_model_12 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care, 
   data = merged_data_2018
   )
 
 regression_model_13 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_family_child_care, 
   data = merged_data_2018
   )
 
 regression_model_14 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     one_parent_households, 
   data = merged_data_2018
   )
 
 regression_model_15 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     ratio_of_one_to_both, 
   data = merged_data_2018
   )
 
 regression_model_16 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     average_family_child_care, 
   data = merged_data_2018
   )
 
 regression_model_17 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     one_parent_households, 
   data = merged_data_2018
   )
 
 regression_model_18 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     ratio_of_one_to_both, 
   data = merged_data_2018
   )
 
 regression_model_19 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_family_child_care + 
     one_parent_households, 
   data = merged_data_2018
   )
 
 regression_model_20 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_family_child_care + 
     ratio_of_one_to_both, 
   data = merged_data_2018
   )
 
 regression_model_21 <- lm(
-  MN ~ 
+  reading_level ~ 
     one_parent_households + 
     ratio_of_one_to_both, 
   data = merged_data_2018
   )
 
 regression_model_22 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care, 
@@ -502,7 +505,7 @@ regression_model_22 <- lm(
   )
 
 regression_model_23 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_family_child_care, 
@@ -510,7 +513,7 @@ regression_model_23 <- lm(
   )
 
 regression_model_24 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     one_parent_households, 
@@ -518,7 +521,7 @@ regression_model_24 <- lm(
   )
 
 regression_model_25 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     ratio_of_one_to_both, 
@@ -526,7 +529,7 @@ regression_model_25 <- lm(
   )
 
 regression_model_26 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care + 
     average_family_child_care, 
@@ -534,7 +537,7 @@ regression_model_26 <- lm(
   )
 
 regression_model_27 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care + 
     one_parent_households, 
@@ -542,7 +545,7 @@ regression_model_27 <- lm(
   )
 
 regression_model_28 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care + 
     ratio_of_one_to_both, 
@@ -550,7 +553,7 @@ regression_model_28 <- lm(
   )
 
 regression_model_29 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty +
     average_family_child_care + 
     one_parent_households, 
@@ -558,7 +561,7 @@ regression_model_29 <- lm(
   )
 
 regression_model_30 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_family_child_care + 
     ratio_of_one_to_both, 
@@ -566,7 +569,7 @@ regression_model_30 <- lm(
   )
 
 regression_model_31 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     one_parent_households + 
     ratio_of_one_to_both, 
@@ -574,7 +577,7 @@ regression_model_31 <- lm(
   )
 
 regression_model_32 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care + 
     average_family_child_care, 
@@ -582,7 +585,7 @@ regression_model_32 <- lm(
   )
 
 regression_model_33 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care + 
     one_parent_households, 
@@ -590,7 +593,7 @@ regression_model_33 <- lm(
   )
 
 regression_model_34 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care + 
     ratio_of_one_to_both, 
@@ -598,7 +601,7 @@ regression_model_34 <- lm(
   )
 
 regression_model_35 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_family_child_care + 
     one_parent_households, 
@@ -606,7 +609,7 @@ regression_model_35 <- lm(
   )
 
 regression_model_36 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_family_child_care + 
     ratio_of_one_to_both, 
@@ -614,7 +617,7 @@ regression_model_36 <- lm(
   )
 
 regression_model_37 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     one_parent_households + 
     ratio_of_one_to_both, 
@@ -622,7 +625,7 @@ regression_model_37 <- lm(
   )
 
 regression_model_38 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households, 
@@ -630,7 +633,7 @@ regression_model_38 <- lm(
   )
 
 regression_model_39 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     average_family_child_care + 
     ratio_of_one_to_both, 
@@ -638,7 +641,7 @@ regression_model_39 <- lm(
   )
 
 regression_model_40 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
@@ -646,7 +649,7 @@ regression_model_40 <- lm(
   )
 
 regression_model_41 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_family_child_care + 
     one_parent_households + 
     ratio_of_one_to_both, 
@@ -654,7 +657,7 @@ regression_model_41 <- lm(
   )
 
 regression_model_42 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -663,7 +666,7 @@ regression_model_42 <- lm(
   )
 
 regression_model_43 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -672,7 +675,7 @@ regression_model_43 <- lm(
   )
 
 regression_model_44 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -681,7 +684,7 @@ regression_model_44 <- lm(
   )
 
 regression_model_45 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_family_child_care + 
@@ -690,7 +693,7 @@ regression_model_45 <- lm(
   )
 
 regression_model_46 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_family_child_care + 
@@ -699,7 +702,7 @@ regression_model_46 <- lm(
   )
 
 regression_model_47 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     one_parent_households + 
@@ -708,7 +711,7 @@ regression_model_47 <- lm(
   )
 
 regression_model_48 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care + 
     average_family_child_care + 
@@ -717,7 +720,7 @@ regression_model_48 <- lm(
   )
 
 regression_model_49 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care + 
     average_family_child_care + 
@@ -726,7 +729,7 @@ regression_model_49 <- lm(
   )
 
 regression_model_50 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_center_child_care + 
     one_parent_households + 
@@ -735,7 +738,7 @@ regression_model_50 <- lm(
   )
 
 regression_model_51 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     average_family_child_care + 
     one_parent_households + 
@@ -744,7 +747,7 @@ regression_model_51 <- lm(
   )
 
 regression_model_52 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care + 
     average_family_child_care + 
@@ -753,7 +756,7 @@ regression_model_52 <- lm(
   )
 
 regression_model_53 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care + 
     average_family_child_care + 
@@ -762,7 +765,7 @@ regression_model_53 <- lm(
   )
 
 regression_model_54 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_center_child_care + 
     one_parent_households + 
@@ -771,7 +774,7 @@ regression_model_54 <- lm(
   )
 
 regression_model_55 <- lm(
-  MN ~ 
+  reading_level ~ 
     percentage_single_mother + 
     average_family_child_care + 
     one_parent_households + 
@@ -780,7 +783,7 @@ regression_model_55 <- lm(
   )
 
 regression_model_56 <- lm(
-  MN ~ 
+  reading_level ~ 
     average_center_child_care + 
     average_family_child_care + 
     one_parent_households + 
@@ -789,7 +792,7 @@ regression_model_56 <- lm(
   )
 
 regression_model_57 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -799,7 +802,7 @@ regression_model_57 <- lm(
   )
 
 regression_model_58 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -809,7 +812,7 @@ regression_model_58 <- lm(
   )
 
 regression_model_59 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -819,7 +822,7 @@ regression_model_59 <- lm(
   )
 
 regression_model_60 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_family_child_care + 
@@ -829,7 +832,7 @@ regression_model_60 <- lm(
   )
 
 regression_model_61 <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     ratio_of_one_to_both + 
     average_center_child_care + 
@@ -839,7 +842,7 @@ regression_model_61 <- lm(
   )
 
 regression_model_62 <- lm(
-  MN ~ 
+  reading_level ~ 
     ratio_of_one_to_both + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -849,7 +852,7 @@ regression_model_62 <- lm(
   )
 
 maximum_regression_model <- lm(
-  MN ~ 
+  reading_level ~ 
     family_poverty + 
     percentage_single_mother + 
     average_center_child_care + 
@@ -1012,8 +1015,8 @@ tidy(regression_model_61) |>
 
 #Preparing data
 best_states_data <- merged_data |> 
-  arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  arrange(desc(reading_level)) |>
+  mutate(achievement_level = if_else(reading_level>=223, "High", "Low")) |>
   filter(achievement_level == "High") |> 
   filter(!is.na(state_name))
 
@@ -1094,17 +1097,17 @@ merged_final_data |>
 
 ## Take-Away - Vis #1
 
--   Visualization #1 identifies states with highest scores in 4th-grade reading as MA, FL, and WY
+-   Visualization #1 illustrates NY, NJ, VT, and WY as states with highest government spending on students
+
+    -   Warrants further research on public investment models in these states
+
+## Take-Away - Vis #2
+
+-   Visualization #2 identifies states with highest scores in 4th-grade reading as MA, FL, NJ, and WY
 
     -   White students overrepresented in these states
 
     -   Schools must cater to cultural fluency of non-White students
-
-## Take-Away - Vis #2
-
--   Visualization #2 illustrates NY, NJ, and WY as states with highest government spending on students
-
-    -   Warrants further research on public investment models in these states
 
 ## Take-Away - Regression Model
 
