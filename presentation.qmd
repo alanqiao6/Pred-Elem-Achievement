@@ -170,7 +170,6 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
 #| label: merging-data 
 
 #Merging childcare_costs and counties 
-<<<<<<< HEAD
 merged_counties_data <- left_join(childcare_costs, counties, join_by("county_fips_code"))
 
 #Preparing scores to merge
@@ -182,7 +181,7 @@ merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_na
 ```
 
 ```{r}
-#| label: preparing-data-for-vis-4
+#| label: preparing-data-for-vis-3
 #| echo: false
 
 #Preparing data
@@ -199,18 +198,21 @@ best_states_data <- best_states_data |>
     names_to = "sector_type", 
     values_to = "sector_percentage"
   ) |>
-  mutate(sector_type = case_when(
-    sector_type == "emp_m" ~ "Management and Science", 
-    sector_type == "emp_n" ~ "Natural Resources", 
-    sector_type == "emp_p" ~ "Production", 
-    sector_type == "emp_service" ~ "Public Service",
-    sector_type == "emp_sales" ~ "Sales and Office"
+  mutate(
+    sector_type = case_when(
+      sector_type == "emp_m" ~ "Management and Science", 
+      sector_type == "emp_n" ~ "Natural Resources", 
+      sector_type == "emp_p" ~ "Production", 
+      sector_type == "emp_service" ~ "Public Service",
+      sector_type == "emp_sales" ~ "Sales and Office"
     )
-=======
+  )
+
+#Merging childcare_costs and counties    
 merged_counties_data <- left_join(
-  childcare_costs, counties, 
+  childcare_costs, 
+  counties, 
   join_by("county_fips_code")
->>>>>>> f86dac0f275ad9f285d1a6fcdc7807d326dd6caf
   )
 
 #Preparing scores to merge
