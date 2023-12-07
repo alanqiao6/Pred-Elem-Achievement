@@ -887,7 +887,7 @@ tidy(regression_model_61)
 # Visualization #3: Visualizing Job Distributions in Best-Practice States
 
 ```{r}
-#| label: preparing-data-for-vis-4
+#| label: preparing-data-for-vis-3
 
 #Preparing data
 best_states_data <- merged_data |> 
@@ -918,12 +918,6 @@ best_states_data <- best_states_data |>
     )
   )
 
-#Grouping and summarizing data 
-summarized_data <- best_states_data |>
-  group_by(state_name, sector_type) |>
-  summarize(mean_percentage = mean(sector_percentage))
-
-
 #Identifying mean percentage in each field in each state in each year
 
 summarized_data <- best_states_data |>
@@ -938,7 +932,7 @@ merged_final_data <- left_join(best_states_data, summarized_data, join_by(state_
 #| label: visualizing-states
 #| fig-asp: 0.6
 
-
+#Creating visualization 3
 merged_final_data <- merged_final_data |> 
   mutate(
     sector_type = fct_reorder(sector_type, mean_percentage, .desc = TRUE, .fun = median)
@@ -1091,7 +1085,7 @@ and it includes the predictors `family_poverty` ,
 `ratio_of_one_to_both`, `average_center_child_care`,
 `average_family_child_care`, and `one_parent_households`.
 
-Visualization #4 is rooted in goal #4. We have always been committed to
+Visualization #3 is rooted in goal #4. We have always been committed to
 creating a visualization that zooms in on states with the highest values
 in `reading_level`. In our literature review to determine potential
 community-level predictors for `reading_level`, we found that both
@@ -1150,7 +1144,7 @@ encourage maternity and/or paternity leave as well as fund subsidized
 childcare programs. Furthermore, we affirm an already robust
 understanding of the poverty cycle; low educational achievement
 associated with high poverty levels will make it tough for children from
-low-income neighborhoods to reach economic prosperity. Visualization #4
+low-income neighborhoods to reach economic prosperity. Visualization #3
 suggests that states with high `reading_level` also have a high
 percentage of adults who work in "Management and Science," fostering
 ideas about novel programs that create government-sponsored vocational
