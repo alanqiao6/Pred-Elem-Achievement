@@ -49,7 +49,43 @@ Code for us_states from Kieran Healy:
 `https://socviz.co/maps.html#map-u.s.-state-level-data`
 
 ```{r}
-#| label: us-map-dataset
+#| label: us-map-scores
+#| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
+
+scores <- scores|> 
+  rename(reading_level = MN)
+
+scores_new <- scores |> 
+  filter(reading_level != is.na(reading_level)) |>
+  mutate(region = str_to_lower(Jurisdiction), reading_level = as.numeric(reading_level))
+
+us_states_scores <- us_states |>
+  select(-subregion) |>
+  inner_join(
+    scores_new, 
+    join_by(region == region), 
+    relationship = "many-to-many"
+    )
+
+ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_level)) +
+  geom_polygon(color = "white") + 
+  theme_void() + 
+  scale_fill_gradient(low = "gray90", high = "darkblue") +
+  theme(
+    legend.text = element_text(size=7),
+    legend.title = element_text(size=10),
+    legend.position = c(.2, .1),
+    legend.direction = "horizontal"
+        ) +
+  coord_quickmap() + 
+  labs(
+    title = "Achievement Rates Based on State", 
+    fill = "Average 4th Grade \nReading Score"
+    )
+```
+
+```{r}
+#| label: us-expenditures-dataset
 
 expenditures_PK12ed <- expenditures |> 
   mutate(region = str_to_lower(state)) |>
@@ -92,42 +128,6 @@ ggplot(
   labs(
     title = "Expenditures Based on State", 
     fill = "Expenditure \nper Child \n(in thousands)"
-    )
-```
-
-```{r}
-#| label: us-map-scores
-#| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
-
-scores <- scores|> 
-  rename(reading_level = MN)
-
-scores_new <- scores |> 
-  filter(reading_level != is.na(reading_level)) |>
-  mutate(region = str_to_lower(Jurisdiction), reading_level = as.numeric(reading_level))
-
-us_states_scores <- us_states |>
-  select(-subregion) |>
-  inner_join(
-    scores_new, 
-    join_by(region == region), 
-    relationship = "many-to-many"
-    )
-
-ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_level)) +
-  geom_polygon(color = "white") + 
-  theme_void() + 
-  scale_fill_gradient(low = "gray90", high = "darkblue") +
-  theme(
-    legend.text = element_text(size=7),
-    legend.title = element_text(size=10),
-    legend.position = c(.2, .1),
-    legend.direction = "horizontal"
-        ) +
-  coord_quickmap() + 
-  labs(
-    title = "Achievement Rates Based on State", 
-    fill = "Average 4th Grade \nReading Score"
     )
 ```
 
@@ -1104,7 +1104,7 @@ we have learned in our FOCUS and, through critical thinking, novel
 understandings of data visualization, and empathy, highlight
 discrepancies in academic achievement. Specifically, we will narrow in
 on elementary school students across the United States, identifying
-environmental factors that contribute to inequities in their education. 
+environmental factors that contribute to inequities in their education.
 
 **Goals:**
 

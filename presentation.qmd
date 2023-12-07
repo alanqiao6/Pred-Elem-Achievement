@@ -62,6 +62,44 @@ us_states <- map_data("state")
 
 4.  Determine distribution of occupational fields in states with the best and worst 4th-grade reading levels
 
+## Choropleth Map: 2022 Scores
+
+```{r}
+#| label: us-map-scores
+#| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
+
+scores <- scores|> 
+  rename(reading_level = MN)
+
+scores_new <- scores |> 
+  filter(reading_level != is.na(reading_level)) |>
+  mutate(region = str_to_lower(Jurisdiction), reading_level = as.numeric(reading_level))
+
+us_states_scores <- us_states |>
+  select(-subregion) |>
+  inner_join(
+    scores_new, 
+    join_by(region == region), 
+    relationship = "many-to-many"
+    )
+
+ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_level)) +
+  geom_polygon(color = "white") + 
+  theme_void() + 
+  scale_fill_gradient(low = "gray90", high = "darkblue") +
+  theme(
+    legend.text = element_text(size=7),
+    legend.title = element_text(size=10),
+    legend.position = c(.2, .1),
+    legend.direction = "horizontal"
+        ) +
+  coord_quickmap() + 
+  labs(
+    title = "Achievement Rates Based on State", 
+    fill = "Average 4th Grade \nReading Score"
+    )
+```
+
 ## Choropleth Map: 2016 Expenditures
 
 ```{r}
@@ -108,44 +146,6 @@ ggplot(
   labs(
     title = "Expenditures Based on State", 
     fill = "Expenditure \nper Child \n(in thousands)"
-    )
-```
-
-## Choropleth Map: 2022 Scores
-
-```{r}
-#| label: us-map-scores
-#| fig.alt: "This visualization is a choropleth map of the United States, a plot that indicates the strength of a certain variable across different states by increasing or decreasing their shading (excluding Hawaii and Alaska). This plot has the title 'Achievement Rates Based on State' and is mapping 2016 4th-grade reading achievement rates from 2022 to each state. From this visualization, we see that there does not appear to be a clear pattern in higher achievement rates--Massachusetts, New Jersey, and Florida seem to be the highest achieving states at around 225 while New Mexico and West Virginia appear to be the lowest achieving ones (at around 200). The states of Wyoming, Utah, and Colorado are also high-achieving (with scores of about 225, similarly to Massachusetts) among many other average- or low-achieving states."
-
-scores <- scores|> 
-  rename(reading_level = MN)
-
-scores_new <- scores |> 
-  filter(reading_level != is.na(reading_level)) |>
-  mutate(region = str_to_lower(Jurisdiction), reading_level = as.numeric(reading_level))
-
-us_states_scores <- us_states |>
-  select(-subregion) |>
-  inner_join(
-    scores_new, 
-    join_by(region == region), 
-    relationship = "many-to-many"
-    )
-
-ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_level)) +
-  geom_polygon(color = "white") + 
-  theme_void() + 
-  scale_fill_gradient(low = "gray90", high = "darkblue") +
-  theme(
-    legend.text = element_text(size=7),
-    legend.title = element_text(size=10),
-    legend.position = c(.2, .1),
-    legend.direction = "horizontal"
-        ) +
-  coord_quickmap() + 
-  labs(
-    title = "Achievement Rates Based on State", 
-    fill = "Average 4th Grade \nReading Score"
     )
 ```
 
@@ -1098,17 +1098,17 @@ merged_final_data |>
 
 ## Take-Away - Vis #1
 
--   Visualization #1 illustrates NY, NJ, VT, and WY as states with highest government spending on students
-
-    -   Warrants further research on public investment models in these states
-
-## Take-Away - Vis #2
-
--   Visualization #2 identifies states with highest scores in 4th-grade reading as MA, FL, NJ, and WY
+-   Visualization #1 identifies states with highest scores in 4th-grade reading as MA, FL, NJ, and WY
 
     -   White students overrepresented in these states
 
     -   Schools must cater to cultural fluency of non-White students
+
+## Take-Away - Vis #2
+
+-   Visualization #2 illustrates NY, NJ, VT, and WY as states with highest government spending on students
+
+    -   Warrants further research on public investment models in these states
 
 ## Take-Away - Regression Model
 
