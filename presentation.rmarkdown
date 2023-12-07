@@ -44,6 +44,7 @@ scores <- read_csv("data/scores.csv")
 us_states <- map_data("state")
 ```
 
+
 ## Contextualizing Our Project
 
 -   Four courses in KISS connected by two learning goals:
@@ -63,6 +64,7 @@ us_states <- map_data("state")
 4.  Determine distribution of occupational fields in states with the best and worst 4th-grade reading levels
 
 ## Choropleth Map: 2022 Scores
+
 
 ```{r}
 #| label: us-map-scores
@@ -100,7 +102,9 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = reading_le
     )
 ```
 
+
 ## Choropleth Map: 2016 Expenditures
+
 
 ```{r}
 #| label: us-map-dataset
@@ -149,6 +153,7 @@ ggplot(
     )
 ```
 
+
 ## Linear Model Literature Review:
 
 -   Behavioral skills influenced by parental monitoring and family stability (EARLY SKILLS AND PREDICTORS OF ACADEMIC SUCCESS 2016)
@@ -168,6 +173,7 @@ ggplot(
 ## Linear Model Literature Review (cont'd):
 
 -   High-quality childcare has been shown to lead to better performance in STEM through high school (American Psychological Association 2023) 
+
 
 ```{r}
 #| label: merging-data 
@@ -275,7 +281,9 @@ merged_data <- merged_data |>
   )
 ```
 
+
 ## Final Regression Model (#61)
+
 
 ```{r}
 #| label: forward-selection-model 
@@ -1008,7 +1016,9 @@ tidy(regression_model_61) |>
   knitr::kable(digits = 3)
 ```
 
+
 ## Job Distributions in Best-Practice States
+
 
 ```{r}
 #| label: preparing-for-vis-4
@@ -1095,6 +1105,7 @@ merged_final_data |>
   scale_fill_viridis_d(option = "B")
 ```
 
+
 ## Take-Away - Vis #1
 
 -   Visualization #1 identifies states with highest scores in 4th-grade reading as MA, FL, NJ, and WY
@@ -1146,3 +1157,4 @@ Perry-Jenkins, Maureen. "How a Parent's Experience at Work Impacts Their Kids." 
 ## Works Cited (cont'd)
 
 "Racial and Ethnic Achievement Gaps." Stanford Center for Education Policy Analysis. Accessed 6 Dec. 2023.
+
