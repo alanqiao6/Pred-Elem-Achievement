@@ -60,7 +60,7 @@ us_states <- map_data("state")
 
 3.  Construct best-fit linear regression model with community-level factors associated with average 4th-grade reading level across a county
 
-4.  Determine distribution of occupational fields in states with the best and worst 4th-grade reading levels.
+4.  Determine distribution of occupational fields in states with the best and worst 4th-grade reading levels
 
 ## Choropleth Map: 2016 Expenditures
 
@@ -148,25 +148,23 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
 
 ## Linear Model Literature Review:
 
--   Behavioral skills influenced by parental monitoring and family stability (EARLY SKILLS AND PREDICTORS... 2016)
+-   Behavioral skills influenced by parental monitoring and family stability (EARLY SKILLS AND PREDICTORS OF ACADEMIC SUCCESS 2016)
 
     -   Crucial behavioral skills predict reading level
 
-<!-- -->
-
--   Low-SES families less likely to have experiences to develop skills such as phonological awareness, vocabulary, and oral language (American Psychological Association, 2017)
+-   Low-SES families less likely to have experiences developing skills such as phonological awareness, vocabulary, and oral language (American Psychological Association 2017)
 
 ## Linear Model Literature Review (cont'd):
 
--   Longitudinal study of 370+ working-class families finds jobs allow for more autonomy, and supportive supervisors were more engaged with their children (Perry-Jenkins, 2023)
+-   Longitudinal study of 370+ working-class families finds jobs allow for more autonomy, and supportive supervisors were more engaged with their children (Perry-Jenkins 2023)
 
--   Achievement gap amongst students of varying races particularly between White, Black, and Hispanic children (Racial and Ethnic Achievement Gaps, n.d.)
+-   Achievement gap amongst students of varying races particularly between White, Black, and Hispanic children (Racial and Ethnic Achievement Gaps n.d.)
 
     -   Likely mediated by differences in the socioeconomic statuses of families
 
 ## Linear Model Literature Review (cont'd):
 
--   High-quality childcare has been shown to lead to better performance in STEM through high school (American Psychological Association, 2023) 
+-   High-quality childcare has been shown to lead to better performance in STEM through high school (American Psychological Association 2023) 
 
 ```{r}
 #| label: merging-data 
@@ -1082,24 +1080,26 @@ merged_final_data |>
 
 ## Limitations
 
--   Only had the average 4th-grade reading_level per state, not county
+-   Only had the average 4th-grade `reading_level` per state, not county
 
--   Only had scores from 2022, so used community data from 2018, the most recent year of inputted data in childcare_costs
+-   Only had scores from 2022, so used community data from 2018, the most recent year of inputted data in `childcare_costs`
 
--   Standardized tests not perfect for aptitude, potential, and achievement measurement
+-   Standardized tests not perfect for aptitude, potential, or achievement measurement
 
     -   Consider disability or neurodiversity
 
 ## Works Cited
 
-"EARLY SKILLS AND PREDICTORS OF ACADEMIC SUCCESS." Connecticut Government, Hanover Research, Nov. 2016, portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:\~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.Accessed 6 Dec. 2023.
+"EARLY SKILLS AND PREDICTORS OF ACADEMIC SUCCESS." Connecticut Government, Hanover Research, Nov. 2016, portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success #:\~:text.=Behavioral%20skills%20have.%20been %20found,behavioral%20skills%20are %20developing%20appropriately.Accessed 6 Dec. 2023.
 
 "Education and Socioeconomic Status." American Psychological Association, 2017, www.apa.org/pi/ses/resources/publications/education. Accessed 6 Dec. 2023.
 
 ## Works Cited (cont'd)
 
-"High-quality child care contributes to later success in science, math." American Psychological Association, 15 June 2023, www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:\~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association. Accessed 6 Dec. 2023.
+"High-quality child care contributes to later success in science, math." American Psychological Association, 15 June 2023, www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:\~:text=Washington%20%E2%80%94%20Children%20 who%20receive%20high,by%20the%20American%20. Psychological%20Association. Accessed 6 Dec. 2023.
 
-Perry-Jenkins, Maureen. "How a Parent's Experience at Work Impacts Their Kids." Harvard Business Review, 31 Jan. 2023, hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:\~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents%27%20work%20lives.&text=It%27s%20no%20secret%20that%20our,our%20lives%20outside%20of%20work.
+Perry-Jenkins, Maureen. "How a Parent's Experience at Work Impacts Their Kids." Harvard Business Review, 31 Jan. 2023, hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:\~:text=A%20multi%2Dyear%20study%20following,by%20 their%20parents%27% 20work%20lives.&text=It%27s%20no%20secret%20that%20our, our%20lives%20outside%20of%20work.
+
+## Works Cited (cont'd)
 
 "Racial and Ethnic Achievement Gaps." Stanford Center for Education Policy Analysis. Accessed 6 Dec. 2023.
