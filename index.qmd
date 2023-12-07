@@ -1078,7 +1078,7 @@ merged_final_data |>
   ggplot(aes(x = study_year, y = mean_percentage, fill = sector_type)) + 
   geom_density(stat = "identity", alpha = 0.5) +
   facet_wrap(~ state_name) +
-  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
+  scale_x_continuous(breaks = c(2009, 2013, 2017)) +
   labs(
     x = "Year",
     y = "Population Percentage Employed",
@@ -1136,9 +1136,9 @@ data in `childcare_costs` with the state-based data in `scores`. The
 interested in examining `inf_adj_perchild`, total government spending on
 educational resources per child adjusted for inflation. Our last
 dataset, `us_states`, there are `r ncol(us_states)` variables and
-`r nrow(us_states)` observations. This dataset provides the latitude and
-longitude coordinates in order to create the choropleth map base of the
-United States for visualizations #1 and #2.
+`r nrow(us_states)` observations. This dataset provides the latitudinal
+and longitudinal coordinates in order to create the choropleth map base
+of the United States for visualizations #1 and #2.
 
 The `scores` data are from 2022, while the `childcare_costs` and
 `expenditures` data are from 2018 and 2016, respectively. We thought
@@ -1238,17 +1238,17 @@ socioeconomic status and parental attitudes contribute to
 `reading_level`, both of which may be reflect in parents' occupations.
 Thus, we opted to explore the average distribution of occupational
 fields of adults across all the counties in Massachusetts, New Jersey,
-New Hampshire, and Wyoming, the states with the highest `reading_level`
-scores with inputted data for occupational percentages in
-`childcare_costs` in 2018--- the most recent year of data collection.
-The original dataset included each occupational field as a separate
-variable and gave the percentage of adults who worked in that field for
-each county. We then pivoted the data so that each there was one
-variable for the names of the occupational fields, `sector_type`, and
-the associated percentage in each occupational field,
+New Hampshire, Colorado, Florida, and Wyoming, the states with the
+highest `reading_level` scores with inputted data for occupational
+percentages in `childcare_costs` in 2018--- the most recent year of data
+collection. The original dataset included each occupational field as a
+separate variable and gave the percentage of adults who worked in that
+field for each county. We then pivoted the data so that each there was
+one variable for the names of the occupational fields, `sector_type`,
+and the associated percentage in each occupational field,
 `sector_percentage`. This enabled us to construct a bar graph that
 depicted the average percentage of the population that worked in each
-sector in each state. We find that in all four states of highest
+sector in each state. We find that in all six states of highest
 `reading_level`, the highest percentage of the population was employed
 in "Management and Science." To go about explaining the distribution
 represented in this visualization, we drew upon the skill developed in
@@ -1280,7 +1280,7 @@ conducted to test the efficacy and feasibility of nascent frameworks for
 multicultural education. Visualization #2 finds that New Jersey, New
 York, and Wyoming have the highest expenditures on students. More
 specific work needs to be done on the associations between
-`inf_adj_perchild` and `reading_level`. Visualization #3 finds that
+`inf_adj_perchild` and `reading_level`. Our regression model finds that
 `family_poverty` , `ratio_of_one_to_both`, `average_center_child_care`,
 `average_family_child_care`, and `one_parent_households` all play a
 significant role in children's educational experiences. Immediately,
