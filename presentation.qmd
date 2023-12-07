@@ -52,10 +52,6 @@ us_states <- map_data("state")
 
     -   Tools for interpersonal connection and collective advocacy
 
-## High-level Goal
-
--   Guided by these themes, our project sought to create powerful data visualizations that highlight early educational inequity across the United States as a pressing crisis and employ statistical analysis to identify predictors of early academic success
-
 ## Project Objectives
 
 1.  Illustrate relative average 4th-grade reading level in each state
@@ -156,9 +152,8 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
 
     -   Crucial behavioral skills predict reading level
 
-```{=html}
 <!-- -->
-```
+
 -   Low-SES families less likely to have experiences to develop skills such as phonological awareness, vocabulary, and oral language (American Psychological Association, 2017)
 
 ## Linear Model Literature Review (cont'd):
