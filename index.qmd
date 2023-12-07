@@ -884,7 +884,7 @@ the predictors of `family_poverty` , `ratio_of_one_to_both`,
 tidy(regression_model_61)
 ```
 
-# Visualization #3: Visualizing Job Distributions in Best-Practice and Worst-Practice States
+# Visualization #3: Visualizing Job Distributions in Best-Practice States
 
 ```{r}
 #| label: preparing-data-for-vis-4
@@ -924,19 +924,14 @@ summarized_data <- best_states_data |>
   summarize(mean_percentage = mean(sector_percentage))
 
 
-#Trying something new
-summarized_data_1 <- best_states_data |>
-  group_by(county_fips_code, study_year) |>
-  summarize(sum_percentage = sum(sector_percentage))
+#Identifying mean percentage in each field in each state in each year
 
-summarized_data_2 <- best_states_data |>
+summarized_data <- best_states_data |>
   group_by(state_name, sector_type, study_year) |>
   summarize(mean_percentage = mean(sector_percentage))
   
 #Merging data 
-merged_intermediary_data <- left_join(best_states_data, summarized_data_1, join_by(county_fips_code, study_year))
-
-merged_final_data <- left_join(merged_intermediary_data, summarized_data_2, join_by(state_name, sector_type, study_year))
+merged_final_data <- left_join(best_states_data, summarized_data, join_by(state_name, sector_type, study_year))
 ```
 
 ```{r}
@@ -985,8 +980,8 @@ relative to each other; 3) utilize predictor pruning methods to
 construct a linear regression model with community-level factors that
 are associated with the average 4th-grade reading level across the
 county; and 4) determine the distribution of adults across various
-occupational fields in states with the best and worst 4th-grade reading
-levels. Each goal corresponds to a visualization or regression model. 
+occupational fields in states with the best 4th-grade reading levels.
+Each goal corresponds to a visualization or regression model. 
 
 **Data Overview:**
 
