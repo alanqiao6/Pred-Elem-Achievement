@@ -162,12 +162,6 @@ best_states_data <- best_states_data |>
     sector_type == "emp_p" ~ "Production", 
     sector_type == "emp_service" ~ "Public Service",
     sector_type == "emp_sales" ~ "Sales and Office"
-    ), 
-    state_name = case_when(
-      state_name == "Massachusetts" ~ "MA", 
-      state_name == "New Hampshire" ~ "NH",
-      state_name == "New Jersey" ~ "NJ",
-      state_name == "Wyoming" ~ "WY"
     )
   )
 

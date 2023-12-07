@@ -964,9 +964,9 @@ merged_final_data |>
 
 The FOCUS cluster, Knowledge in the Service of Society, affectionately
 dubbed KISS, is an educational program that empowers students with
-interdisciplinary skills towards to effect social change at granular and
-broad levels. One salient learning objective of the program is to
-instill passion and knowledge for remedying injustices in our nation's
+interdisciplinary skills to effect social change at granular and broad
+levels. One salient learning objective of the program is to instill
+passion and knowledge for remedying injustices in our nation's
 educational institutions. In this project, we seek to carry forward what
 we have learned in our FOCUS and, through critical thinking, novel
 understandings of data visualization, and empathy, highlight
@@ -988,13 +988,13 @@ levels. Each goal corresponds to a visualization or regression model. 
 
 **Data Overview:**
 
-To achieve objectives, we integrated data from four datasets. The first
+To achieve objectives, we integrated data from five datasets. The first
 dataset was `scores`, which had `r ncol(scores)` variables and
 `r nrow(scores)` observations. The variables of interest were
-`state_name`, and `reading_level`, the average 4th-grade reading level
-in the given state in 2022 (state-wide achievement level). The second
-was `childcare_costs`, which had `r ncol(childcare_costs)` variables and
-`r nrow(childcare_costs)` observations. `Childcare_costs` offered all of
+`state_name` and `reading_level`, the average 4th-grade reading level in
+each given state in 2022 (state-wide achievement level). The second was
+`childcare_costs`, which had `r ncol(childcare_costs)` variables and
+`r nrow(childcare_costs)` observations. `childcare_costs` offered all of
 our data on county-level socioeconomic factors, and we mutated various
 variables to be potential predictors in our linear regression model for
 goal #3. The `counties` dataset had `r ncol(counties)` variables and
@@ -1002,8 +1002,12 @@ goal #3. The `counties` dataset had `r ncol(counties)` variables and
 data in `childcare_costs` with the state-based data in `scores`. The
 `expenditures` dataset had `r ncol(expenditures)` variables and
 `r nrow(expenditures)` observations. From this dataset, we were
-interested in examining `inf_adj_perchild`, or total government spending
-on educational resources per child adjusted for inflation. 
+interested in examining `inf_adj_perchild`, total government spending on
+educational resources per child adjusted for inflation. Our last
+dataset, `us_states`, there are `r ncol(us_states)` variables and
+`r nrow(us_states)` observations. This dataset provides the latitude and
+longitude coordinates in order to create the choropleth map base of the
+United States for visualizations #1 and #2.
 
 The `scores` data are from 2022, while the `childcare_costs` and
 `expenditures` data are from 2018 and 2016, respectively. We thought
@@ -1020,7 +1024,7 @@ a variable in distinct geographic regions. We primarily employ the
 Florida, Wyoming, and Massachusetts, stood out among the rest for having
 superior demonstrated 4th-grade reading levels. To zoom out from this
 superlative factoid, it is also the case that smaller northeastern and a
-few midwestern states have higher reading levels It may seem arbitrary
+few midwestern states have higher reading levels. It may seem arbitrary
 that these three states scored above the rest in terms of reading
 levels, especially considering the diverse areas of the United States in
 which each of them is situated. However, consideration of principles
@@ -1036,7 +1040,7 @@ states like Wyoming or Colorado is also noteworthily White. Discussions
 in CRT have revealed the unfortunate truth that America's education
 systems are upheld to be conducive to White students. According to the
 class-provided article "School Norms and Reforms, Critical Race Theory,
-and the Fairytale of Equitable Education," White students excel on
+and the Fairytale of Equitable Education," white students excel on
 aptitude assessments like the SAT or IQ tests because they have been
 designed for them to do so. So, while there may be noteworthy additional
 circumstances that foretell academic success, as we begin analyzing
@@ -1094,7 +1098,7 @@ and it includes the predictors `family_poverty` ,
 `ratio_of_one_to_both`, `average_center_child_care`,
 `average_family_child_care`, and `one_parent_households`.
 
-Visualization #4 is rooted in goal #4. We have always been committed to
+Visualization #3 is rooted in goal #4. We have always been committed to
 creating a visualization that zooms in on states with the highest values
 in `reading_level`. In our literature review to determine potential
 community-level predictors for `reading_level`, we found that both
