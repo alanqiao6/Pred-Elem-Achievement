@@ -60,7 +60,7 @@ us_states <- map_data("state")
 
 3.  Construct best-fit linear regression model with community-level factors associated with average 4th-grade reading level across a county
 
-4.  Determine distribution of occupational fields in states with the best and worst 4th-grade reading levels
+4.  Determine distribution of occupational fields in states with the best 4th-grade reading levels
 
 ## Choropleth Map: 2022 Scores
 

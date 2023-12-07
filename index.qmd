@@ -1227,7 +1227,8 @@ their corresponding adjusted R2 values. We then filtered for the model
 with the maximum R2. We find that `regression_model_61` has the best fit
 and it includes the predictors `family_poverty` ,
 `ratio_of_one_to_both`, `average_center_child_care`,
-`average_family_child_care`, and `one_parent_households`.
+`average_family_child_care`, and `one_parent_households`. Still, the
+adjusted-R2 is only 0.06.
 
 Visualization #3 is rooted in goal #4. We have always been committed to
 creating a visualization that zooms in on states with the highest values
@@ -1288,11 +1289,13 @@ encourage maternity and/or paternity leave as well as fund subsidized
 childcare programs. Furthermore, we affirm an already robust
 understanding of the poverty cycle; low educational achievement
 associated with high poverty levels will make it tough for children from
-low-income neighborhoods to reach economic prosperity. Visualization #3
-suggests that states with high `reading_level` also have a high
-percentage of adults who work in "Management and Science," fostering
-ideas about novel programs that create government-sponsored vocational
-training for adults from all communities to enter competitive fields.
+low-income neighborhoods to reach economic prosperity. Still, the model
+has a poor fit and more work must be done to understand predictors of
+academic achievement. Visualization #3 suggests that states with high
+`reading_level` also have a high percentage of adults who work in
+"Management and Science," fostering ideas about novel programs that
+create government-sponsored vocational training for adults from all
+communities to enter competitive fields.
 
 Our analyses were restricted in a number of ways. First, since we only
 had the average 4th-grade `reading_level` per state, we were not able to
