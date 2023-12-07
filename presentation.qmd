@@ -55,13 +55,27 @@ scores <- read_csv("data/scores.csv")
 us_states <- map_data("state")
 ```
 
-## Contextualizing Elementary Educational Inequity
+## Contextualizing Our Project
 
--   HI
+-   Four courses in KISS connected by two learning goals:
 
--   HI
+    -   Root cause analysis: elucidating roots of issues to develop meaningful solutions to sociopolitical issues
 
--   HI
+    -   Tools for interpersonal connection and collective advocacy
+
+## High-level Goal
+
+-   Guided by these themes, our project sought to create powerful data visualizations that highlight early educational inequity across the United States as a pressing crisis and employ statistical analysis to identify predictors of early academic success
+
+## Project Objectives
+
+1.  Illustrate relative average 4th-grade reading level in each state
+
+2.  Provide side-by-side comparison of funding each state allocates to students
+
+3.  Construct best-fit linear regression model with community-level factors associated with average 4th-grade reading level across a county
+
+4.  Determine distribution of occupational fields in states with the best and worst 4th-grade reading levels.
 
 ## Choropleth Map: 2016 Expenditures
 
@@ -121,107 +135,28 @@ ggplot(us_states_scores, aes(x = long, y = lat, group = group, fill = MN)) +
 #theme() make legend text size smaller 
 ```
 
-## Visualization #3: State Achievement Comparisons
+## Linear Model Literature Review:
 
-```{r}
-#| label: merging-data 
-#| echo: false
+-   Behavioral skills influenced by parental monitoring and family stability (EARLY SKILLS AND PREDICTORS... 2016)
 
-#Merging childcare_costs and counties 
-merged_counties_data <- left_join(childcare_costs, counties, join_by("county_fips_code"))
+    -   Crucial behavioral skills predict reading level
 
-#Preparing scores to merge
-renamed_scores <- scores |> 
-  rename("state_name" = "Jurisdiction")
-
-#Merging all data
-merged_data <- left_join(merged_counties_data, renamed_scores, join_by("state_name"))
+```{=html}
+<!-- -->
 ```
+-   Low-SES families less likely to have experiences to develop skills such as phonological awareness, vocabulary, and oral language (American Psychological Association, 2017)
 
-```{r}
-#| label: preparing-data-for-vis-4
-#| echo: false
+## Linear Model Literature Review (cont'd):
 
-#Preparing data
-best_states_data <- merged_data |> 
-  arrange(desc(MN)) |>
-  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
-  filter(achievement_level == "High") |> 
-  filter(!is.na(state_name))
+-   Longitudinal study of 370+ working-class families finds jobs allow for more autonomy, and supportive supervisors were more engaged with their children (Perry-Jenkins, 2023)
 
-best_states_data <- best_states_data |>
-  relocate(state_name) |> 
-  pivot_longer(
-    cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
-    names_to = "sector_type", 
-    values_to = "sector_percentage"
-  ) |>
-  mutate(sector_type = case_when(
-    sector_type == "emp_m" ~ "Management and Science", 
-    sector_type == "emp_n" ~ "Natural Resources", 
-    sector_type == "emp_p" ~ "Production", 
-    sector_type == "emp_service" ~ "Public Service",
-    sector_type == "emp_sales" ~ "Sales and Office"
-    ), 
-    state_name = case_when(
-      state_name == "Massachusetts" ~ "MA", 
-      state_name == "New Hampshire" ~ "NH",
-      state_name == "New Jersey" ~ "NJ",
-      state_name == "Wyoming" ~ "WY"
-    )
-  )
+-   Achievement gap amongst students of varying races particularly between White, Black, and Hispanic children (Racial and Ethnic Achievement Gaps, n.d.)
 
-#Grouping and summarizing data 
-summarized_data <- best_states_data |>
-  group_by(state_name, sector_type) |>
-  summarize(mean_percentage = mean(sector_percentage))
+    -   Likely mediated by differences in the socioeconomic statuses of families
 
+## Linear Model Literature Review (cont\'d):
 
-#Trying somethign new
-summarized_data_1 <- best_states_data |>
-  group_by(county_fips_code, study_year) |>
-  summarize(sum_percentage = sum(sector_percentage))
-
-summarized_data_2 <- best_states_data |>
-  group_by(state_name, sector_type, study_year) |>
-  summarize(mean_percentage = mean(sector_percentage))
-  
-#Merging data 
-merged_intermediary_data <- left_join(best_states_data, summarized_data_1, join_by(county_fips_code, study_year))
-
-merged_final_data <- left_join(merged_intermediary_data, summarized_data_2, join_by(state_name, sector_type, study_year))
-```
-
-```{r}
-#| label: visualizing-states
-#| fig-asp: 0.6
-#| echo: false
-
-merged_final_data <- merged_final_data |> 
-  mutate(
-    sector_type = fct_reorder(sector_type, mean_percentage, .desc = TRUE)
-  ) |> 
-  filter(!is.na(state_name))
-
-merged_final_data |> 
-  ggplot(aes(x = study_year, y = mean_percentage, fill = sector_type)) + 
-  geom_density(stat = "identity", alpha = 0.5) +
-  facet_wrap(~ state_name) +
-  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
-  labs(x = "Year", y = "Population Percentage Employed", title = "Percentage of Population Employed in Sector by State", fill = "Sector") +
-  theme_bw() +
-  scale_fill_viridis_d(option = "B")
-```
-
-## Linear Model Literature Review: Choosing Predictors for Forward Selection
-
--   1
-
--   2
-
--   3
-
--   4
+-   High-quality childcare has been shown to lead to better performance in STEM through high school (American Psychological Association, 2023) 
 
 ```{r}
 #| label: merging-data 
@@ -940,75 +875,128 @@ tidy(regression_model_61) |>
   knitr::kable(digits = 3)
 ```
 
-## Take-Aways
+## Job Distributions in Best-Practice States
 
--   
-
-## Extra Templates
-
-::: columns
-::: {.column width="50%"}
-::: aside
-\[\*\] And add footnotes
-:::
-
--   Some text
--   goes here
-:::
-
-::: {.column width="50%"}
 ```{r}
-#| warning: false
-#| out-width: "100%"
-#| fig-width: 4
+#| label: preparing-for-vis-4
+
+#Preparing data
+best_states_data <- merged_data |> 
+  arrange(desc(MN)) |>
+  mutate(achievement_level = if_else(MN>=223, "High", "Low")) |>
+  filter(achievement_level == "High") |> 
+  filter(!is.na(state_name))
+
+best_states_data <- best_states_data |>
+  relocate(state_name) |> 
+  pivot_longer(
+    cols = c("emp_m", "emp_service", "emp_sales", "emp_n", "emp_p"), 
+    names_to = "sector_type", 
+    values_to = "sector_percentage"
+  ) |>
+  mutate(sector_type = case_when(
+    sector_type == "emp_m" ~ "Management and Science", 
+    sector_type == "emp_n" ~ "Natural Resources", 
+    sector_type == "emp_p" ~ "Production", 
+    sector_type == "emp_service" ~ "Public Service",
+    sector_type == "emp_sales" ~ "Sales and Office"
+    ), 
+    state_name = case_when(
+      state_name == "Massachusetts" ~ "MA", 
+      state_name == "New Hampshire" ~ "NH",
+      state_name == "New Jersey" ~ "NJ",
+      state_name == "Wyoming" ~ "WY"
+    )
+  )
+
+#Grouping and summarizing data 
+summarized_data <- best_states_data |>
+  group_by(state_name, sector_type) |>
+  summarize(mean_percentage = mean(sector_percentage))
+
+
+#Trying somethign new
+summarized_data_1 <- best_states_data |>
+  group_by(county_fips_code, study_year) |>
+  summarize(sum_percentage = sum(sector_percentage))
+
+summarized_data_2 <- best_states_data |>
+  group_by(state_name, sector_type, study_year) |>
+  summarize(mean_percentage = mean(sector_percentage))
+  
+#Merging data 
+merged_intermediary_data <- left_join(best_states_data, summarized_data_1, join_by(county_fips_code, study_year))
+
+merged_final_data <- left_join(merged_intermediary_data, summarized_data_2, join_by(state_name, sector_type, study_year))
+```
+
+```{r}
+#| label: visualizing-states
+#| fig-asp: 0.6
 #| echo: false
 
-# See how I changed out-width and fig-width from defaults
-# to make the figure bigger
+merged_final_data <- merged_final_data |> 
+  mutate(
+    sector_type = fct_reorder(sector_type, mean_percentage, .desc = TRUE)
+  ) |> 
+  filter(!is.na(state_name))
 
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
-  theme_minimal()
-```
-:::
-:::
-
-# A new section...
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r}
-#| label: penguins-table
-
-
+merged_final_data |> 
+  ggplot(aes(x = study_year, y = mean_percentage, fill = sector_type)) + 
+  geom_density(stat = "identity", alpha = 0.5) +
+  facet_wrap(~ state_name) +
+  scale_x_continuous(breaks = c(2008, 2010, 2012, 2014, 2016, 2018)) +
+  labs(x = "Year", y = "Population Percentage Employed", title = "Percentage of Population Employed in Sector by State", fill = "Sector") +
+  theme_bw() +
+  scale_fill_viridis_d(option = "B")
 ```
 
-## Images
+## Take-Away - Vis #1
 
-![Image credit: Danielle Navarro, Percolate.](images/watercolour_sys02_img34_teacup-ocean.png)
+-   Visualization #1 identifies states with highest scores in 4th-grade reading as MA, FL, and WY
 
-## Math Expressions {.smaller}
+    -   White students overrepresented in these states
 
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. \$\alpha+\beta\$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
+    -   Schools must cater to cultural fluency of non-White students
 
-```         
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
+## Take-Away - Vis #2
 
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
+-   Visualization #2 illustrates NY, NJ, and WY as states with highest government spending on students
 
-Limitations:
+    -   Warrants further research on public investment models in these states
 
-1.  The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
+## Take-Away - Regression Model
 
-2.  There should not be spaces after the opening `$` or before the closing `$`.
+-   The best fit is in `regression_model_61`, with the predictors `family_poverty`, `ratio_of_one_to_both`, `average_center_child_care`, `average_family_child_care`, and `one_parent_households`
 
-# Wrap up
+    -   Encourages support for m/paternity leave, subsidized childcare, and community support for families of low SES
 
-## Feeling adventurous?
+## Take-Away - Vis #3
 
--   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+-   Visualization #3 suggests that states with high `reading_level` also have a high percentage of adults who work in "Management and Science"
 
--   But some of you might want to play around with slide styling. Some solutions for this can be found at <https://quarto.org/docs/presentations/revealjs>.
+    -   Prompts ideas for community-based vocational training for more to enter competitive fields
+
+## Limitations
+
+-   Only had the average 4th-grade reading_level per state, not county
+
+-   Only had scores from 2022, so used community data from 2018, the most recent year of inputted data in childcare_costs
+
+-   Standardized tests not perfect for aptitude, potential, and achievement measurement
+
+    -   Consider disability or neurodiversity
+
+## Works Cited
+
+"EARLY SKILLS AND PREDICTORS OF ACADEMIC SUCCESS." Connecticut Government, Hanover Research, Nov. 2016, portal.ct.gov/-/media/SDE/ESSA-Evidence-Guides/Early_Skills_and_Predictors_of_Academic_Success#:\~:text=Behavioral%20skills%20have%20been%20found,behavioral%20skills%20are%20developing%20appropriately.Accessed 6 Dec. 2023.
+
+"Education and Socioeconomic Status." American Psychological Association, 2017, www.apa.org/pi/ses/resources/publications/education. Accessed 6 Dec. 2023.
+
+## Works Cited (cont'd)
+
+"High-quality child care contributes to later success in science, math." American Psychological Association, 15 June 2023, www.apa.org/news/press/releases/2023/06/quality-child-care-science-math#:\~:text=Washington%20%E2%80%94%20Children%20who%20receive%20high,by%20the%20American%20Psychological%20Association. Accessed 6 Dec. 2023.
+
+Perry-Jenkins, Maureen. "How a Parent's Experience at Work Impacts Their Kids." Harvard Business Review, 31 Jan. 2023, hbr.org/2023/01/how-a-parents-experience-at-work-impacts-their-kids#:\~:text=A%20multi%2Dyear%20study%20following,by%20their%20parents%27%20work%20lives.&text=It%27s%20no%20secret%20that%20our,our%20lives%20outside%20of%20work.
+
+"Racial and Ethnic Achievement Gaps." Stanford Center for Education Policy Analysis. Accessed 6 Dec. 2023.
